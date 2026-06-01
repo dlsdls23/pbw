@@ -3,247 +3,966 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로또 번호 추첨기</title>
+    <title>크래시 그래프 X 독박 데스매치 📈🎲</title>
+    <link href="https://fonts.googleapis.com/css2?family=DungGeunMo&display=swap" rel="stylesheet">
+    <!-- 폭죽 효과 라이브러리 로드 -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #3b82f6, #9333ea);
-            --app-bg: rgba(255, 255, 255, 0.12);
-            --app-border: rgba(255, 255, 255, 0.25);
-            --text-main: #ffffff;
-            --text-sub: #e2e8f0;
-            --info-bg: rgba(255, 255, 255, 0.08);
-            --btn-reset-bg: rgba(255, 255, 255, 0.14);
-            --btn-reset-border: rgba(255, 255, 255, 0.28);
-            --btn-reset-text: #f8fafc;
-            --shadow: rgba(0, 0, 0, 0.18);
+            --bg-color: #0b0b12;
+            --card-bg: #161626;
+            --neon-green: #39ff14;
+            --neon-pink: #ff007f;
+            --neon-blue: #00f0ff;
+            --neon-yellow: #ffea00;
+            --neon-gray: #8b8ba8;
         }
 
-        body.light-mode {
-            --bg-gradient: linear-gradient(135deg, #f0f9ff, #e0e7ff);
-            --app-bg: #ffffff;
-            --app-border: #e2e8f0;
-            --text-main: #1e293b;
-            --text-sub: #475569;
-            --info-bg: #f8fafc;
-            --btn-reset-bg: #f1f5f9;
-            --btn-reset-border: #cbd5e1;
-            --btn-reset-text: #334155;
-            --shadow: rgba(0, 0, 0, 0.05);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Noto Sans KR', sans-serif;
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        }
         body {
-            min-height: 100vh;
+            background-color: var(--bg-color);
+            color: #fff;
+            font-family: 'DungGeunMo', sans-serif;
+            margin: 0;
+            padding: 15px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            background: var(--bg-gradient);
-            background-attachment: fixed;
-            color: var(--text-main);
+            min-height: 100vh;
         }
-        .lotto-app {
-            width: min(540px, calc(100% - 32px));
-            background: var(--app-bg);
-            border: 1px solid var(--app-border);
-            border-radius: 24px;
-            padding: 32px;
-            box-shadow: 0 20px 60px var(--shadow);
-            backdrop-filter: blur(18px);
+
+        h1 {
+            color: var(--neon-pink);
+            text-shadow: 0 0 10px var(--neon-pink);
+            font-size: 2.2rem;
+            margin: 5px 0 2px 0;
+            text-align: center;
+        }
+
+        .sub-title {
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px var(--neon-blue);
+            font-size: 1.1rem;
+            margin: 0 0 15px 0;
+            text-align: center;
+        }
+
+        /* 상단 모드 전환 탭 디자인 */
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: #22223b;
+            color: var(--neon-gray);
+            border: 2px solid #3d3d5e;
+            padding: 12px 0;
+            font-family: 'DungGeunMo', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: #2d2d4a;
+            color: #fff;
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
+        }
+
+        .container {
+            background: var(--card-bg);
+            border: 3px solid #3d3d5e;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 500px;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
             position: relative;
         }
-        .theme-toggle {
+
+        .display-box {
+            background: #05050a;
+            border: 2px solid #3d3d5e;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 220px;
+        }
+
+        .mult-overlay {
             position: absolute;
             top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
+            left: 20px;
+            font-size: 3.5rem;
+            color: var(--neon-green);
+            text-shadow: 0 0 15px var(--neon-green);
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 10;
+            display: none;
+        }
+
+        .countdown-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 5.5rem;
+            color: var(--neon-yellow);
+            text-shadow: 0 0 25px var(--neon-yellow);
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 20;
+            display: none;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* 🎉 초대형 축하 배너 스타일 */
+        .mega-celebration-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            font-size: 1.8rem;
+            color: #fff;
+            text-shadow: 0 0 20px #ff007f, 0 0 40px #00f0ff;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 30;
+            display: none;
+            text-align: center;
+            width: 90%;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px 10px;
+            border: 3px double var(--neon-yellow);
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(255, 234, 0, 0.6);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            word-break: keep-all;
+        }
+
+        @keyframes popIn {
+            to { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        #status-text {
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            font-size: 1.1rem;
+            color: var(--neon-yellow);
+            pointer-events: none;
+            z-index: 10;
+            text-shadow: 0 0 5px #000;
+        }
+
+        .shake { animation: shakeEffect 0.4s ease-in-out; }
+        @keyframes shakeEffect {
+            0%, 100% { transform: translate(0, 0); }
+            10%, 30%, 50%, 70%, 90% { transform: translate(-3px, 2px); }
+            20%, 40%, 60%, 80% { transform: translate(3px, -2px); }
+        }
+
+        .mode-selection {
+            display: flex;
+            justify-content: space-around;
+            background: #11111e;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border: 1px solid #3d3d5e;
+        }
+
+        .bet-section { display: flex; gap: 15px; margin-bottom: 15px; }
+        .bet-card { flex: 1; background: #1f1f34; border: 2px solid #3d3d5e; border-radius: 8px; padding: 12px; text-align: center; }
+        .choice-btns { display: flex; gap: 8px; }
+        
+        .choice-btns button {
+            flex: 1; background: #2d2d44; color: #fff; border: 2px solid #fff; padding: 8px 0;
+            font-family: 'DungGeunMo', sans-serif; font-size: 1.1rem; cursor: pointer; border-radius: 4px;
+        }
+        .choice-btns button.active-odd { background: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink); }
+        .choice-btns button.active-even { background: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); }
+
+        .target-section { background: #1f1f34; border: 2px solid #3d3d5e; border-radius: 8px; padding: 12px; margin-bottom: 20px; text-align: center; }
+        .target-section input { background: #000; border: 2px solid #fff; color: var(--neon-green); font-family: 'DungGeunMo', sans-serif; font-size: 1.2rem; padding: 6px; width: 120px; text-align: center; margin-left: 10px; border-radius: 4px; }
+
+        /* 👥 단체전 스퀘어 보드 스타일 */
+        #team-panel {
+            background: #111122;
+            border: 2px solid #4d4d7a;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+        .team-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            gap: 5px;
+        }
+        .team-header div {
+            display: flex;
+            gap: 4px;
+        }
+        .team-header button {
+            background: #3a3a5e; color: #fff; border: 1px solid #777; padding: 4px 6px;
+            font-family: 'DungGeunMo', sans-serif; cursor: pointer; border-radius: 4px; font-size: 0.85rem;
+        }
+        .team-title {
+            font-size: 1.05rem;
+            color: var(--neon-pink);
+            margin: 0;
+        }
+        .btn-reset-match {
+            background: #ff0055 !important;
+            color: #fff;
+            border: 1px solid #fff;
+            padding: 4px 6px;
+            font-family: 'DungGeunMo', sans-serif;
+            font-size: 0.85rem;
             cursor: pointer;
-            box-shadow: none;
-            padding: 5px;
-            width: 40px;
-            height: 40px;
+            border-radius: 4px;
+        }
+        .member-row {
             display: flex;
             align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: var(--info-bg);
+            gap: 8px;
+            margin-bottom: 8px;
+            background: #1a1a2e;
+            padding: 6px;
+            border-radius: 4px;
         }
-        .theme-toggle:hover {
-            transform: scale(1.1);
+        .member-row.saved {
+            opacity: 0.4;
+            background: #0d2b18;
+            border: 1px solid var(--neon-green);
         }
-        .lotto-app h1 {
-            font-size: 2rem;
-            margin-bottom: 12px;
+        .member-row.saved .member-idx { color: var(--neon-green); }
+        .member-idx { color: var(--neon-blue); font-weight: bold; width: 25px; }
+        .member-input {
+            background: #000; border: 1px solid #555; color: #fff;
+            font-family: 'DungGeunMo', sans-serif; padding: 4px; width: 80px; border-radius: 4px;
+        }
+        .team-choice-btns { display: flex; gap: 4px; flex: 1; }
+        .team-choice-btns button {
+            flex: 1; background: #333; color: #aaa; border: 1px solid #666;
+            font-family: 'DungGeunMo', sans-serif; font-size: 0.9rem; cursor: pointer; border-radius: 4px; padding: 4px 0;
+        }
+        .team-choice-btns button.t-odd { background: var(--neon-pink); color: #fff; box-shadow: 0 0 5px var(--neon-pink); }
+        .team-choice-btns button.t-even { background: var(--neon-blue); color: #fff; box-shadow: 0 0 5px var(--neon-blue); }
+
+        /* 단체전 전용 액션 제어 패널 */
+        .team-action-zone {
+            margin-bottom: 15px;
             text-align: center;
         }
-        .lotto-app p {
-            text-align: center;
-            color: var(--text-sub);
-            margin-bottom: 24px;
-            line-height: 1.6;
-        }
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 24px;
-        }
-        button {
-            border: none;
-            border-radius: 999px;
-            padding: 14px 26px;
-            font-size: 1rem;
-            font-weight: 700;
+        .btn-confirm-team {
+            width: 100%;
+            background: var(--neon-green);
+            color: #000;
+            border: 2px solid #fff;
+            padding: 12px 0;
+            font-family: 'DungGeunMo', sans-serif;
+            font-size: 1.3rem;
+            font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s ease, background-color 0.2s ease;
-            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.2);
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+            transition: all 0.15s;
         }
-        button:hover {
-            transform: translateY(-2px);
+        .btn-confirm-team:active {
+            transform: scale(0.98);
         }
-        .generate-btn {
-            background: #22c55e;
-            color: #0f172a;
+
+        .disabled-panel { opacity: 0.25; pointer-events: none; }
+
+        /* 경기 결과창 */
+        .result-panel { background: #252538; border: 2px dashed #fff; border-radius: 8px; padding: 15px; display: none; margin-top: 15px;}
+        .result-title { font-size: 1.3rem; text-align: center; margin-bottom: 10px; color: var(--neon-yellow); }
+        .result-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 1.1rem; }
+        
+        /* 단체전 라운드 브리핑 구역 */
+        #team-round-report {
+            background: #000; padding: 8px; border-radius: 4px; font-size: 0.95rem; line-height: 1.4; color: #9fffff; margin-top: 5px;
+            border: 1px solid #3d3d5e;
         }
-        .reset-btn {
-            background: var(--btn-reset-bg);
-            color: var(--btn-reset-text);
-            border: 1px solid var(--btn-reset-border);
-        }
-        .ball-list {
-            display: grid;
-            grid-template-columns: repeat(6, minmax(56px, 1fr));
-            gap: 14px;
-            justify-items: center;
-            margin-bottom: 24px;
-        }
-        .ball {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #0f172a;
-            background: #f8fafc;
-            border: 2px solid rgba(15, 23, 42, 0.08);
-        }
-        .ball:nth-child(1) { background: #facc15; }
-        .ball:nth-child(2) { background: #fb7185; }
-        .ball:nth-child(3) { background: #38bdf8; }
-        .ball:nth-child(4) { background: #34d399; }
-        .ball:nth-child(5) { background: #a78bfa; }
-        .ball:nth-child(6) { background: #f97316; }
-        .message {
-            min-height: 2.2rem;
-            text-align: center;
-            color: var(--text-sub);
-            font-size: 0.95rem;
-        }
-        .info {
-            margin-top: 18px;
-            padding: 18px 20px;
-            background: var(--info-bg);
-            border-radius: 20px;
-            color: var(--text-main);
-            line-height: 1.7;
-            font-size: 0.95rem;
-        }
+
+        /* 최근 기록 */
+        .history-section { margin-top: 15px; background: #11111e; border: 2px solid #3d3d5e; border-radius: 8px; padding: 12px; width: 100%; box-sizing: border-box; }
+        .history-title { font-size: 1rem; color: var(--neon-blue); margin-bottom: 8px; text-align: center; }
+        .history-list { display: flex; flex-direction: row; gap: 6px; overflow-x: auto; padding-bottom: 5px; white-space: nowrap; }
+        .history-item { background: #000; border: 1px solid #444; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; display: inline-block; }
+
+        .badge { padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .badge.bg-odd { background: var(--neon-pink); color: white; }
+        .badge.bg-even { background: var(--neon-blue); color: white; }
+        .success { color: var(--neon-green); }
+        .fail { color: var(--neon-pink); }
+        .no-play { color: var(--neon-gray); }
     </style>
 </head>
 <body>
-    <div class="lotto-app">
-        <button class="theme-toggle" id="themeToggle" title="테마 변경">🌙</button>
-        <h1>로또 번호 추첨기</h1>
-        <p>버튼을 눌러 1부터 45 사이의 랜덤 로또 번호 6개를 추첨하고 자동 정렬된 결과를 확인하세요.</p>
 
-        <div class="controls">
-            <button class="generate-btn" id="generateBtn">번호 추첨</button>
-            <button class="reset-btn" id="resetBtn">초기화</button>
+    <h1>양재 아센팟 음료내기</h1>
+    <div class="sub-title">민기가 좋아하는 그래프!</div>
+    
+    <!-- 메인 대형 모드 탭 -->
+    <div class="tab-container">
+        <button id="tab-solo" class="tab-btn active" onclick="switchMainTab('SOLO')">👤 개인전 모드</button>
+        <button id="tab-team" class="tab-btn" onclick="switchMainTab('TEAM')">☠️ 독박 단체전</button>
+    </div>
+
+    <div class="container">
+        <!-- 1. 메인 그래픽 스크린 -->
+        <div class="display-box" id="screen-box">
+            <canvas id="graphCanvas" width="460" height="220"></canvas>
+            <div class="mult-overlay" id="multiplier">1.00x</div>
+            <div class="countdown-overlay" id="countdown-timer">5.00</div>
+            <!-- 🎉 초대형 폭죽 축하 배너 추가 -->
+            <div class="mega-celebration-overlay" id="mega-banner"></div>
+            <div id="status-text">배팅을 준비하세요!</div>
         </div>
 
-        <div class="ball-list" id="ballList">
-            <div class="ball">-</div>
-            <div class="ball">-</div>
-            <div class="ball">-</div>
-            <div class="ball">-</div>
-            <div class="ball">-</div>
-            <div class="ball">-</div>
+        <!-- [A] 개인전 전용 UI 홀더 -->
+        <div id="solo-ui-group">
+            <div class="mode-selection" id="mode-selector-zone">
+                <label style="cursor:pointer;"><input type="radio" name="gameMode" value="OE" checked onchange="switchSoloSubMode()"> 홀짝 예측</label>
+                <label style="cursor:pointer;"><input type="radio" name="gameMode" value="GRAPH" onchange="switchSoloSubMode()"> 배수 탈출</label>
+            </div>
+            <div class="bet-section" id="oe-panel">
+                <div class="bet-card" style="border-color: var(--neon-pink);">
+                    <div class="choice-btns">
+                        <button id="btn-odd" onclick="selectSoloOE('ODD')">홀 (O)</button>
+                        <button id="btn-even" onclick="selectSoloOE('EVEN')">짝 (E)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="target-section" id="graph-panel">
+                <label style="color: var(--neon-yellow);">목표 안전 탈출 배수 :</label>
+                <input type="text" id="target-input" value="" placeholder="미입력 (관전)">
+            </div>
         </div>
 
-        <div class="message" id="message">행운을 빕니다!</div>
+        <!-- [B] 단체전 전용 UI 홀더 -->
+        <div id="team-ui-group" style="display: none;">
+            <div id="team-panel">
+                <div class="team-header">
+                    <span class="team-title" id="team-board-title">☠️ 제 1라운드 독박 서바이벌</span>
+                    <div>
+                        <button onclick="addMember()">➕ 참가자</button>
+                        <button onclick="removeMember()">➖ 참가자</button>
+                        <button class="btn-reset-match" onclick="forceResetWholeMatch()">🔄 초기화</button>
+                    </div>
+                </div>
+                <div id="member-list-box">
+                    <!-- 스크립트에서 참가자 로우 동적 생성 -->
+                </div>
+            </div>
+            <div class="team-action-zone">
+                <button class="btn-confirm-team" id="btn-team-submit" onclick="confirmAndLaunchCountdown()">🚨 준비 완료 / 수정 잠금</button>
+            </div>
+        </div>
 
-        <div class="info">
-            <strong>사용 방법</strong><br>
-            1. '번호 추첨' 버튼을 클릭하면 중복 없는 6개의 번호가 자동으로 생성됩니다.<br>
-            2. 결과는 오름차순으로 정렬됩니다.<br>
-            3. '초기화'를 누르면 결과가 초기화됩니다.<br><br>
-            <strong>제휴 문의</strong><br>
-            비즈니스 제휴 및 기타 문의는 <a href="partnership_form.html" style="color: inherit; text-decoration: underline;">여기</a>를 통해 접수해 주세요.
+        <!-- 공용 경기 결과창 -->
+        <div class="result-panel" id="result-area">
+            <div class="result-title">━━ 경기 결과 판정 ━━</div>
+            <div class="result-row">
+                <span>최종 종료 배수:</span>
+                <span id="res-final-mult" style="font-weight:bold;">1.00x</span>
+            </div>
+            <div class="result-row">
+                <span>마지막 자리 숫자:</span>
+                <span id="res-last-digit">0</span>
+            </div>
+            <hr style="border: 1px dashed #3d3d5e; margin: 12px 0;">
+            <div class="result-row" style="flex-direction:column; gap:5px;">
+                <span style="font-weight: bold; color:var(--neon-yellow);">판정 브리핑:</span>
+                <span id="res-final-status">판정 중</span>
+                <div id="team-round-report" style="display:none;"></div>
+            </div>
+        </div>
+
+        <!-- 공용 20경기 기록 보드 -->
+        <div class="history-section">
+            <div class="history-title">⏱️ 최근 20경기 기록 (가로 한 줄 정렬)</div>
+            <div class="history-list" id="history-box">
+                <div style="color:#555; font-size:0.9rem;">기록이 없습니다.</div>
+            </div>
         </div>
     </div>
 
     <script>
-        const generateBtn = document.getElementById('generateBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const ballList = document.getElementById('ballList');
-        const message = document.getElementById('message');
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
+        let mainTab = 'SOLO'; 
+        let gameState = 'READY'; 
+        let currentMultiplier = 1.00;
+        let crashPoint = 0;
+        let gameLoopId = null;
+        let countdownLoopId = null;
+        let historyData = [];
+        let tickCounter = 0; 
 
-        // Theme Toggle
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('light-mode');
-            const isLight = body.classList.contains('light-mode');
-            themeToggle.textContent = isLight ? '☀️' : '🌙';
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        });
+        // [개인전 데이터]
+        let selectedSoloOE = null;
 
-        // Load Theme
-        if (localStorage.getItem('theme') === 'light') {
-            body.classList.add('light-mode');
-            themeToggle.textContent = '☀️';
-        }
+        // [단체전 데이터 - 기본값 3명]
+        let teamMembers = [
+            { id: 1, name: '유저1', choice: null, alive: true },
+            { id: 2, name: '유저2', choice: null, alive: true },
+            { id: 3, name: '유저3', choice: null, alive: true }
+        ];
+        let teamRound = 1;
 
-        function generateLottoNumbers() {
-            const numbers = new Set();
-            while (numbers.size < 6) {
-                const num = Math.floor(Math.random() * 45) + 1;
-                numbers.add(num);
+        const canvas = document.getElementById('graphCanvas');
+        const ctx = canvas.getContext('2d');
+        let points = []; 
+
+        const multDisplay = document.getElementById('multiplier');
+        const countdownDisplay = document.getElementById('countdown-timer');
+        const megaBanner = document.getElementById('mega-banner');
+        const statusDisplay = document.getElementById('status-text');
+        const screenBox = document.getElementById('screen-box');
+        const resultArea = document.getElementById('result-area');
+        const historyBox = document.getElementById('history-box');
+
+        buildTeamUI();
+        switchMainTab('SOLO');
+
+        function switchMainTab(tab) {
+            if (gameState !== 'READY' && gameState !== 'TEAM_WAITING' && gameState !== 'FINISHED') return;
+            mainTab = tab;
+            
+            document.getElementById('tab-solo').className = (tab === 'SOLO') ? 'tab-btn active' : 'tab-btn';
+            document.getElementById('tab-team').className = (tab === 'TEAM') ? 'tab-btn active' : 'tab-btn';
+
+            clearInterval(countdownLoopId);
+            countdownDisplay.style.display = 'none';
+            megaBanner.style.display = 'none';
+
+            if (tab === 'SOLO') {
+                if (gameState === 'FINISHED') gameState = 'READY';
+                document.getElementById('solo-ui-group').style.display = 'block';
+                document.getElementById('team-ui-group').style.display = 'none';
+                switchSoloSubMode();
+                startSoloAutoCountdown(); 
+            } else {
+                document.getElementById('solo-ui-group').style.display = 'none';
+                document.getElementById('team-ui-group').style.display = 'block';
+                if (gameState !== 'FINISHED') {
+                    gameState = 'TEAM_WAITING'; 
+                }
+                refreshTeamUIState();
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawGrid(1.00);
+                if (gameState !== 'FINISHED') {
+                    statusDisplay.style.color = 'var(--neon-yellow)';
+                    statusDisplay.innerText = `✍️ 세팅 완료 후 아래 [준비 완료] 버튼을 누르세요!`;
+                }
             }
-            return [...numbers].sort((a, b) => a - b);
         }
 
-        function updateBalls(numbers) {
-            const balls = ballList.querySelectorAll('.ball');
-            balls.forEach((ball, index) => {
-                ball.textContent = numbers[index] ?? '-';
+        function switchSoloSubMode() {
+            if (mainTab !== 'SOLO') return;
+            const mode = document.querySelector('input[name="gameMode"]:checked').value;
+            if (mode === 'OE') {
+                document.getElementById('oe-panel').classList.remove('disabled-panel');
+                document.getElementById('graph-panel').classList.add('disabled-panel');
+            } else {
+                document.getElementById('oe-panel').classList.add('disabled-panel');
+                document.getElementById('graph-panel').classList.remove('disabled-panel');
+            }
+        }
+
+        function selectSoloOE(choice) {
+            if (gameState !== 'READY') return;
+            selectedSoloOE = choice;
+            document.getElementById('btn-odd').className = (choice === 'ODD') ? 'active-odd' : '';
+            document.getElementById('btn-even').className = (choice === 'EVEN') ? 'active-even' : '';
+        }
+
+        function buildTeamUI() {
+            const box = document.getElementById('member-list-box');
+            box.innerHTML = '';
+            teamMembers.forEach((m) => {
+                const row = document.createElement('div');
+                row.className = 'member-row';
+                row.id = `member-row-${m.id}`;
+
+                row.innerHTML = `
+                    <span class="member-idx">${m.id}</span>
+                    <input type="text" class="member-input" id="member-name-${m.id}" value="${m.name}" onchange="updateMemberName(${m.id}, this.value)">
+                    <div class="team-choice-btns">
+                        <button id="btn-t-odd-${m.id}" onclick="selectTeamOE(${m.id}, 'ODD')">홀</button>
+                        <button id="btn-t-even-${m.id}" onclick="selectTeamOE(${m.id}, 'EVEN')">짝</button>
+                    </div>
+                `;
+                box.appendChild(row);
             });
         }
 
-        function showMessage(text, type = 'normal') {
-            message.textContent = text;
+        function addMember() {
+            if (gameState !== 'TEAM_WAITING') return;
+            if (teamMembers.length >= 10) {
+                alert("참가자는 최대 10명까지만 가능합니다.");
+                return;
+            }
+            const nextId = teamMembers.length > 0 ? Math.max(...teamMembers.map(m => m.id)) + 1 : 1;
+            teamMembers.push({ id: nextId, name: `유저${nextId}`, choice: null, alive: true });
+            buildTeamUI();
+            refreshTeamUIState();
         }
 
-        generateBtn.addEventListener('click', () => {
-            const numbers = generateLottoNumbers();
-            updateBalls(numbers);
-            showMessage(`생성된 번호: ${numbers.join(', ')}`);
-        });
+        function removeMember() {
+            if (gameState !== 'TEAM_WAITING') return;
+            if (teamMembers.length <= 2) {
+                alert("참가자는 최소 2명 이상이어야 합니다.");
+                return;
+            }
+            teamMembers.pop();
+            buildTeamUI();
+            refreshTeamUIState();
+        }
 
-        resetBtn.addEventListener('click', () => {
-            updateBalls([]);
-            showMessage('초기화 되었습니다. 다시 추첨해보세요!');
-        });
+        function updateMemberName(id, val) {
+            let m = teamMembers.find(x => x.id === id);
+            if (m) m.name = val;
+        }
+
+        function selectTeamOE(id, choice) {
+            if (gameState !== 'TEAM_WAITING') return; 
+            let m = teamMembers.find(x => x.id === id);
+            if (!m || !m.alive) return;
+
+            if (m.choice === choice) m.choice = null;
+            else m.choice = choice;
+
+            const oBtn = document.getElementById(`btn-t-odd-${id}`);
+            const eBtn = document.getElementById(`btn-t-even-${id}`);
+
+            oBtn.className = (m.choice === 'ODD') ? 't-odd' : '';
+            eBtn.className = (m.choice === 'EVEN') ? 't-even' : '';
+        }
+
+        function refreshTeamUIState() {
+            let endangeredCount = teamMembers.filter(v => v.alive).length;
+            document.getElementById('team-board-title').innerText = `☠️ 제 ${teamRound}라운드 독박 서바이벌 (${endangeredCount}명 잔류)`;
+            
+            const submitBtn = document.getElementById('btn-team-submit');
+            
+            if (gameState === 'FINISHED') {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = "0.5";
+                submitBtn.innerText = "🏁 경기 종료 (초기화 필요)";
+            } else {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = "1";
+                submitBtn.innerText = "🚨 준비 완료 / 수정 잠금";
+            }
+
+            teamMembers.forEach(m => {
+                const row = document.getElementById(`member-row-${m.id}`);
+                const nameInp = document.getElementById(`member-name-${m.id}`);
+                const oBtn = document.getElementById(`btn-t-odd-${m.id}`);
+                const eBtn = document.getElementById(`btn-t-even-${m.id}`);
+
+                if (!row || !nameInp || !oBtn || !eBtn) return;
+
+                if (!m.alive) {
+                    row.className = 'member-row saved';
+                    nameInp.disabled = true;
+                    oBtn.className = ''; eBtn.className = '';
+                    oBtn.disabled = true; eBtn.disabled = true;
+                } else {
+                    if (gameState === 'FINISHED') {
+                        row.className = 'member-row';
+                        nameInp.disabled = true;
+                        oBtn.disabled = true; eBtn.disabled = true;
+                    } else {
+                        row.className = 'member-row';
+                        nameInp.disabled = false; 
+                        oBtn.disabled = false; eBtn.disabled = false; 
+                        
+                        oBtn.className = (m.choice === 'ODD') ? 't-odd' : '';
+                        eBtn.className = (m.choice === 'EVEN') ? 't-even' : '';
+                    }
+                }
+            });
+        }
+
+        function startSoloAutoCountdown() {
+            gameState = 'READY';
+            let duration = 5000; 
+            let startTimestamp = performance.now();
+            
+            multDisplay.style.display = 'none'; 
+            countdownDisplay.style.display = 'block'; 
+            megaBanner.style.display = 'none';
+            document.getElementById('solo-ui-group').classList.remove('disabled-panel');
+            document.getElementById('tab-solo').disabled = false;
+            document.getElementById('tab-team').disabled = false;
+
+            switchSoloSubMode();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGrid(1.00);
+
+            statusDisplay.style.color = 'var(--neon-yellow)';
+            statusDisplay.innerText = `⏳ 개인전 예측을 선택하세요!`;
+
+            countdownLoopId = setInterval(() => {
+                let timePassed = performance.now() - startTimestamp;
+                let timeLeft = Math.max(0, (duration - timePassed) / 1000);
+                countdownDisplay.innerText = timeLeft.toFixed(2); 
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdownLoopId);
+                    countdownDisplay.style.display = 'none'; 
+                    document.getElementById('solo-ui-group').classList.add('disabled-panel');
+                    document.getElementById('tab-solo').disabled = true;
+                    document.getElementById('tab-team').disabled = true;
+                    startGame();
+                }
+            }, 10);
+        }
+
+        function confirmAndLaunchCountdown() {
+            if (gameState !== 'TEAM_WAITING') return;
+
+            let endangered = teamMembers.filter(m => m.alive);
+            let unchosen = endangered.filter(m => m.choice === null);
+            
+            if (unchosen.length > 0) {
+                alert(`아직 홀짝을 선택하지 않은 참가자가 있습니다!\n남은 인원: ${unchosen.map(m => m.name).join(', ')}`);
+                return;
+            }
+
+            gameState = 'READY';
+            document.getElementById('team-ui-group').classList.add('disabled-panel');
+            document.getElementById('tab-solo').disabled = true;
+            document.getElementById('tab-team').disabled = true;
+            
+            const submitBtn = document.getElementById('btn-team-submit');
+            submitBtn.disabled = true;
+            submitBtn.innerText = "🔒 수정 잠금 (카운트다운 중)";
+
+            let duration = 5000; 
+            let startTimestamp = performance.now();
+            countdownDisplay.style.display = 'block';
+            megaBanner.style.display = 'none';
+            statusDisplay.innerText = `💥 확정 완료! 5초 후 그래프가 발사됩니다!`;
+
+            countdownLoopId = setInterval(() => {
+                let timePassed = performance.now() - startTimestamp;
+                let timeLeft = Math.max(0, (duration - timePassed) / 1000);
+                countdownDisplay.innerText = timeLeft.toFixed(2);
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdownLoopId);
+                    countdownDisplay.style.display = 'none'; 
+                    startGame();
+                }
+            }, 10);
+        }
+
+        // 🔄 언제나 작동하는 완전 강제 초기화 함수 (먹통 버그 수정 완료)
+        function forceResetWholeMatch() {
+            if (!confirm("현재 진행 상황을 모두 파기하고 초기 상태(3인 대기)로 회귀할까요?")) return;
+            
+            clearInterval(gameLoopId);
+            clearInterval(countdownLoopId);
+            
+            teamRound = 1;
+            teamMembers = [
+                { id: 1, name: '유저1', choice: null, alive: true },
+                { id: 2, name: '유저2', choice: null, alive: true },
+                { id: 3, name: '유저3', choice: null, alive: true }
+            ];
+            
+            gameState = 'TEAM_WAITING';
+            document.getElementById('team-ui-group').classList.remove('disabled-panel');
+            document.getElementById('tab-solo').disabled = false;
+            document.getElementById('tab-team').disabled = false;
+            resultArea.style.display = 'none';
+            screenBox.classList.remove('shake');
+            multDisplay.style.display = 'none';
+            countdownDisplay.style.display = 'none';
+            megaBanner.style.display = 'none';
+            
+            buildTeamUI();
+            refreshTeamUIState();
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGrid(1.00);
+            statusDisplay.style.color = 'var(--neon-yellow)';
+            statusDisplay.innerText = `🔄 매치가 초기화되었습니다. 새로 세팅 후 확정을 누르세요!`;
+        }
+
+        function startGame() {
+            gameState = 'RUNNING';
+            currentMultiplier = 1.00;
+            tickCounter = 0; 
+            points = [{x: 0, y: canvas.height - 20, mult: 1.00, tick: 0}]; 
+            resultArea.style.display = 'none';
+            screenBox.classList.remove('shake');
+            megaBanner.style.display = 'none';
+            
+            multDisplay.innerText = '1.00x';
+            multDisplay.style.color = 'var(--neon-green)';
+            multDisplay.style.display = 'block'; 
+
+            const rand = Math.random();
+
+            if (rand < 0.02) {
+                crashPoint = 0.00;
+            } else if (rand < 0.47) {
+                crashPoint = 1.01 + Math.random() * 1.4;
+            } else if (rand < 0.87) {
+                crashPoint = 2.40 + Math.random() * 3.6;
+            } else {
+                crashPoint = 6.00 + Math.random() * 14.0;
+            }
+
+            if (crashPoint === 0.00) {
+                currentMultiplier = 0.00;
+                multDisplay.innerText = "0.00x";
+                multDisplay.style.display = 'block';
+                setTimeout(() => {
+                    crashGame();
+                }, 100);
+                return;
+            }
+
+            statusDisplay.innerText = "🚀 그래프 곡선 상승 중! 과연 낙오될 꼴등 후보는?";
+            statusDisplay.style.color = 'var(--neon-blue)';
+
+            gameLoopId = setInterval(tick, 30); 
+        }
+
+        function tick() {
+            tickCounter += 1;
+            let speed = 0.0003 + (Math.pow(tickCounter, 2) * 0.00000012);
+            currentMultiplier += speed;
+
+            if (currentMultiplier >= crashPoint) {
+                currentMultiplier = crashPoint;
+                clearInterval(gameLoopId);
+                crashGame();
+            } else {
+                multDisplay.innerText = currentMultiplier.toFixed(2) + 'x';
+                const maxExpected = Math.max(7.00, currentMultiplier);
+                const nextX = (tickCounter / (tickCounter + 120)) * (canvas.width - 40);
+                const nextY = (canvas.height - 20) - ((currentMultiplier - 1.00) / (maxExpected - 0.5)) * (canvas.height - 40);
+                
+                points.push({x: nextX, y: nextY, mult: currentMultiplier, tick: tickCounter});
+                renderGraph(maxExpected);
+            }
+        }
+
+        function renderGraph(maxExpected) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGrid(maxExpected);
+            if (points.length < 2) return;
+
+            ctx.strokeStyle = '#ff007f'; ctx.lineWidth = 4; ctx.shadowBlur = 10; ctx.shadowColor = '#ff007f';
+            ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.beginPath();
+            
+            points.forEach((p, idx) => {
+                const currentMax = Math.max(7.00, maxExpected);
+                const currentMaxTick = Math.max(150, points[points.length - 1].tick);
+                const reX = 20 + (p.tick / currentMaxTick) * (canvas.width - 50);
+                const reY = (canvas.height - 20) - ((p.mult - 1.00) / (currentMax - 0.5)) * (canvas.height - 40);
+                if (idx === 0) ctx.moveTo(20, canvas.height - 20);
+                else ctx.lineTo(reX, reY);
+            });
+            ctx.stroke();
+
+            const lastP = points[points.length - 1];
+            const currentMaxTick = Math.max(150, lastP.tick);
+            const headX = 20 + (lastP.tick / currentMaxTick) * (canvas.width - 50);
+            const headY = (canvas.height - 20) - ((lastP.mult - 1.00) / (maxExpected - 0.5)) * (canvas.height - 40);
+            
+            ctx.fillStyle = '#fff'; ctx.shadowBlur = 15; ctx.shadowColor = '#fff'; ctx.beginPath();
+            ctx.arc(headX, headY, 5, 0, Math.PI * 2); ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+
+        function drawGrid(maxExpected) {
+            ctx.strokeStyle = '#1b1b2f'; ctx.lineWidth = 1;
+            for (let y = 20; y < canvas.height; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); }
+            for (let x = 40; x < canvas.width; x += 60) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke(); }
+        }
+
+        function crashGame() {
+            screenBox.classList.add('shake');
+            multDisplay.style.color = 'var(--neon-pink)';
+            multDisplay.innerText = currentMultiplier.toFixed(2) + 'x CRASHED';
+
+            const strMult = currentMultiplier.toFixed(2);
+            const lastDigit = parseInt(strMult.charAt(strMult.length - 1));
+            const roundResult = (lastDigit % 2 === 1) ? 'ODD' : 'EVEN';
+
+            document.getElementById('res-final-mult').innerText = currentMultiplier.toFixed(2) + 'x';
+            document.getElementById('res-last-digit').innerText = `${lastDigit} (${roundResult === 'ODD'?'홀수':'짝수'})`;
+            resultArea.style.display = 'block';
+
+            pushHistory(currentMultiplier, roundResult);
+
+            if (mainTab === 'SOLO') {
+                procSoloResult(roundResult);
+            } else {
+                procTeamResult(roundResult);
+            }
+        }
+
+        function procSoloResult(roundResult) {
+            const mode = document.querySelector('input[name="gameMode"]:checked').value;
+            const statusLabel = document.getElementById('res-final-status');
+            document.getElementById('team-round-report').style.display = 'none';
+
+            if (mode === 'OE') {
+                if (!selectedSoloOE) {
+                    statusLabel.className = 'no-play';
+                    statusLabel.innerText = "이번 라운드는 베팅하지 않고 관전하셨습니다.";
+                } else if (selectedSoloOE === roundResult) {
+                    statusLabel.className = 'success';
+                    statusLabel.innerText = `🎉 축하합니다! [${selectedSoloOE==='ODD'?'홀':'짝'}] 예측에 성공하여 생존하셨습니다!`;
+                    triggerConfetti();
+                } else {
+                    statusLabel.className = 'fail';
+                    statusLabel.innerText = `☠️ 예측 실패! 당신이 이번 라운드의 음료수 독박자 낙오 후보입니다!`;
+                }
+            } else {
+                const inpVal = parseFloat(document.getElementById('target-input').value);
+                if (isNaN(inpVal) || inpVal <= 1.00) {
+                    statusLabel.className = 'no-play';
+                    statusLabel.innerText = "목표 탈출 배수를 입력하지 않아 관전 처리되었습니다.";
+                } else if (currentMultiplier >= inpVal) {
+                    statusLabel.className = 'success';
+                    statusLabel.innerText = `🎉 성공! 목표 배수 ${inpVal.toFixed(2)}x 도달 전 그래프가 폭파되지 않아 안전 탈출했습니다!`;
+                    triggerConfetti();
+                } else {
+                    statusLabel.className = 'fail';
+                    statusLabel.innerText = `☠️ 탈출 실패! 목표 ${inpVal.toFixed(2)}x에 도달하기 전 ${currentMultiplier.toFixed(2)}x에서 폭파되었습니다!`;
+                }
+            }
+
+            setTimeout(() => {
+                if (mainTab === 'SOLO') {
+                    selectedSoloOE = null;
+                    document.getElementById('btn-odd').className = '';
+                    document.getElementById('btn-even').className = '';
+                    startSoloAutoCountdown();
+                }
+            }, 4500);
+        }
+
+        function procTeamResult(roundResult) {
+            let endangered = teamMembers.filter(m => m.alive);
+            let survivors = endangered.filter(m => m.choice === roundResult);
+            let losers = endangered.filter(m => m.choice !== roundResult);
+
+            const reportBox = document.getElementById('team-round-report');
+            reportBox.style.display = 'block';
+            const statusLabel = document.getElementById('res-final-status');
+
+            // 전원 정답이거나 전원 오답인 경우 (전원 생존/무승부)
+            if (survivors.length === endangered.length || losers.length === endangered.length) {
+                statusLabel.className = 'no-play';
+                statusLabel.innerText = `⚖️ 제 ${teamRound}라운드 무승부! (전원 생존)`;
+                reportBox.innerHTML = `틀린 사람과 맞힌 사람의 비율이 맞지 않아 아무도 탈락하지 않았습니다.<br><strong>그대로 다음 라운드를 다시 진행합니다!</strong>`;
+                
+                teamMembers.forEach(m => { if(m.alive) m.choice = null; });
+                
+                setTimeout(() => {
+                    gameState = 'TEAM_WAITING';
+                    document.getElementById('team-ui-group').classList.remove('disabled-panel');
+                    refreshTeamUIState();
+                    statusDisplay.innerText = `🔄 무승부 처리 완료! 다시 홀짝 세팅 후 준비 완료를 누르세요.`;
+                }, 4000);
+                return;
+            }
+
+            // 맞힌 사람이 있는 경우 -> 틀린 사람만 다음 라운드로 (패자부활전/서바이벌 형태)
+            losers.forEach(m => { m.choice = null; });
+            survivors.forEach(m => { m.alive = false; m.choice = null; }); // 맞힌 사람은 탈출 성공
+
+            let finalEndangered = teamMembers.filter(m => m.alive);
+
+            // 꼴등(마지막 1명) 독박자 결정 완료 조건
+            if (finalEndangered.length === 1) {
+                let ultimateLoser = finalEndangered[0];
+                statusLabel.className = 'fail';
+                statusLabel.innerText = `☠️ 데스매치 최종 종료!! 독박자 확정 ☠️`;
+                
+                reportBox.innerHTML = `🎉 탈출 성공자: ${teamMembers.filter(m => !m.alive).map(m => m.name).join(', ')}<br><span style='color:var(--neon-pink); font-weight:bold;'>💀 최종 독박 패배자: ${ultimateLoser.name}</span>`;
+                
+                // 💥 마지막 독박자 배너 문구 수정 반영
+                megaBanner.innerHTML = `${ultimateLoser.name} 당첨!! ㅋㅋㅋㅋ이지까까브로~`;
+                megaBanner.style.display = 'block';
+                triggerConfetti();
+
+                gameState = 'FINISHED'; // 경기 종료 상태로 변경
+                document.getElementById('tab-solo').disabled = false;
+                document.getElementById('tab-team').disabled = false;
+                document.getElementById('team-ui-group').classList.remove('disabled-panel');
+                refreshTeamUIState(); // UI 상태 새로고침 (초기화 버튼 상시 작동 유도)
+                return;
+            }
+
+            // 아직 꼴등이 안 정해졌다면 다음 라운드 준비
+            teamRound += 1;
+            statusLabel.className = 'success';
+            statusLabel.innerText = `⚡ 서바이벌 라운드 종료! (탈출자 발생)`;
+            reportBox.innerHTML = `👏 이번 라운드 탈출 성공: ${survivors.map(m => m.name).join(', ')}<br>💀 여전히 위험한 생존자: ${finalEndangered.map(m => m.name).join(', ')}`;
+
+            setTimeout(() => {
+                gameState = 'TEAM_WAITING';
+                document.getElementById('team-ui-group').classList.remove('disabled-panel');
+                document.getElementById('tab-solo').disabled = false;
+                document.getElementById('tab-team').disabled = false;
+                refreshTeamUIState();
+                statusDisplay.innerText = `✍️ 제 ${teamRound}라운드 세팅 후 아래 [준비 완료] 버튼을 누르세요!`;
+            }, 4000);
+        }
+
+        function pushHistory(mult, resOE) {
+            historyData.unshift({ mult: mult.toFixed(2), oe: resOE });
+            if (historyData.length > 20) historyData.pop();
+
+            historyBox.innerHTML = '';
+            historyData.forEach(h => {
+                const item = document.createElement('div');
+                item.className = 'history-item';
+                item.innerHTML = `${h.mult}x <span class="badge ${h.oe==='ODD'?'bg-odd':'bg-even'}">${h.oe==='ODD'?'홀':'짝'}</span>`;
+                historyBox.appendChild(item);
+            });
+        }
+
+        function triggerConfetti() {
+            var duration = 3 * 1000;
+            var end = Date.now() + duration;
+            (function frame() {
+                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0, y: 0.8 } });
+                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1, y: 0.8 } });
+                if (Date.now() < end) { requestAnimationFrame(frame); }
+            }());
+        }
     </script>
 </body>
 </html>
