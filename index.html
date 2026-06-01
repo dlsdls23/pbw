@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로또 번호 추첨기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #3b82f6, #9333ea);
+            color: #fff;
+        }
+        .lotto-app {
+            width: min(540px, calc(100% - 32px));
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+            backdrop-filter: blur(18px);
+        }
+        .lotto-app h1 {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .lotto-app p {
+            text-align: center;
+            color: #e2e8f0;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+        button {
+            border: none;
+            border-radius: 999px;
+            padding: 14px 26px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.2);
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        .generate-btn {
+            background: #22c55e;
+            color: #0f172a;
+        }
+        .reset-btn {
+            background: rgba(255, 255, 255, 0.14);
+            color: #f8fafc;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+        }
+        .ball-list {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(56px, 1fr));
+            gap: 14px;
+            justify-items: center;
+            margin-bottom: 24px;
+        }
+        .ball {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0f172a;
+            background: #f8fafc;
+            border: 2px solid rgba(15, 23, 42, 0.08);
+        }
+        .ball:nth-child(1) { background: #facc15; }
+        .ball:nth-child(2) { background: #fb7185; }
+        .ball:nth-child(3) { background: #38bdf8; }
+        .ball:nth-child(4) { background: #34d399; }
+        .ball:nth-child(5) { background: #a78bfa; }
+        .ball:nth-child(6) { background: #f97316; }
+        .message {
+            min-height: 2.2rem;
+            text-align: center;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+        }
+        .info {
+            margin-top: 18px;
+            padding: 18px 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            color: #f1f5f9;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="lotto-app">
+        <h1>로또 번호 추첨기</h1>
+        <p>버튼을 눌러 1부터 45 사이의 랜덤 로또 번호 6개를 추첨하고 자동 정렬된 결과를 확인하세요.</p>
+
+        <div class="controls">
+            <button class="generate-btn" id="generateBtn">번호 추첨</button>
+            <button class="reset-btn" id="resetBtn">초기화</button>
+        </div>
+
+        <div class="ball-list" id="ballList">
+            <div class="ball">-</div>
+            <div class="ball">-</div>
+            <div class="ball">-</div>
+            <div class="ball">-</div>
+            <div class="ball">-</div>
+            <div class="ball">-</div>
+        </div>
+
+        <div class="message" id="message">행운을 빕니다!</div>
+
+        <div class="info">
+            <strong>사용 방법</strong><br>
+            1. '번호 추첨' 버튼을 클릭하면 중복 없는 6개의 번호가 자동으로 생성됩니다.<br>
+            2. 결과는 오름차순으로 정렬됩니다.<br>
+            3. '초기화'를 누르면 결과가 초기화됩니다.
+        </div>
+    </div>
+
+    <script>
+        const generateBtn = document.getElementById('generateBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const ballList = document.getElementById('ballList');
+        const message = document.getElementById('message');
+
+        function generateLottoNumbers() {
+            const numbers = new Set();
+            while (numbers.size < 6) {
+                const num = Math.floor(Math.random() * 45) + 1;
+                numbers.add(num);
+            }
+            return [...numbers].sort((a, b) => a - b);
+        }
+
+        function updateBalls(numbers) {
+            const balls = ballList.querySelectorAll('.ball');
+            balls.forEach((ball, index) => {
+                ball.textContent = numbers[index] ?? '-';
+            });
+        }
+
+        function showMessage(text, type = 'normal') {
+            message.textContent = text;
+            message.style.color = type === 'error' ? '#fecaca' : '#e2e8f0';
+        }
+
+        generateBtn.addEventListener('click', () => {
+            const numbers = generateLottoNumbers();
+            updateBalls(numbers);
+            showMessage(`생성된 번호: ${numbers.join(', ')}`);
+        });
+
+        resetBtn.addEventListener('click', () => {
+            updateBalls([]);
+            showMessage('초기화 되었습니다. 다시 추첨해보세요!');
+        });
+    </script>
+</body>
+</html>
