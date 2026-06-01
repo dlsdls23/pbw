@@ -1,32 +1,82 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로또 번호 추첨기</title>
     <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #3b82f6, #9333ea);
+            --app-bg: rgba(255, 255, 255, 0.12);
+            --app-border: rgba(255, 255, 255, 0.25);
+            --text-main: #ffffff;
+            --text-sub: #e2e8f0;
+            --info-bg: rgba(255, 255, 255, 0.08);
+            --btn-reset-bg: rgba(255, 255, 255, 0.14);
+            --btn-reset-border: rgba(255, 255, 255, 0.28);
+            --btn-reset-text: #f8fafc;
+            --shadow: rgba(0, 0, 0, 0.18);
+        }
+
+        body.light-mode {
+            --bg-gradient: linear-gradient(135deg, #f0f9ff, #e0e7ff);
+            --app-bg: #ffffff;
+            --app-border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-sub: #475569;
+            --info-bg: #f8fafc;
+            --btn-reset-bg: #f1f5f9;
+            --btn-reset-border: #cbd5e1;
+            --btn-reset-text: #334155;
+            --shadow: rgba(0, 0, 0, 0.05);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Noto Sans KR', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
         body {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #3b82f6, #9333ea);
-            color: #fff;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
         }
         .lotto-app {
             width: min(540px, calc(100% - 32px));
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: var(--app-bg);
+            border: 1px solid var(--app-border);
             border-radius: 24px;
             padding: 32px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+            box-shadow: 0 20px 60px var(--shadow);
             backdrop-filter: blur(18px);
+            position: relative;
+        }
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: none;
+            padding: 5px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--info-bg);
+        }
+        .theme-toggle:hover {
+            transform: scale(1.1);
         }
         .lotto-app h1 {
             font-size: 2rem;
@@ -35,7 +85,7 @@
         }
         .lotto-app p {
             text-align: center;
-            color: #e2e8f0;
+            color: var(--text-sub);
             margin-bottom: 24px;
             line-height: 1.6;
         }
@@ -64,9 +114,9 @@
             color: #0f172a;
         }
         .reset-btn {
-            background: rgba(255, 255, 255, 0.14);
-            color: #f8fafc;
-            border: 1px solid rgba(255, 255, 255, 0.28);
+            background: var(--btn-reset-bg);
+            color: var(--btn-reset-text);
+            border: 1px solid var(--btn-reset-border);
         }
         .ball-list {
             display: grid;
@@ -96,15 +146,15 @@
         .message {
             min-height: 2.2rem;
             text-align: center;
-            color: #e2e8f0;
+            color: var(--text-sub);
             font-size: 0.95rem;
         }
         .info {
             margin-top: 18px;
             padding: 18px 20px;
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--info-bg);
             border-radius: 20px;
-            color: #f1f5f9;
+            color: var(--text-main);
             line-height: 1.7;
             font-size: 0.95rem;
         }
@@ -112,6 +162,7 @@
 </head>
 <body>
     <div class="lotto-app">
+        <button class="theme-toggle" id="themeToggle" title="테마 변경">🌙</button>
         <h1>로또 번호 추첨기</h1>
         <p>버튼을 눌러 1부터 45 사이의 랜덤 로또 번호 6개를 추첨하고 자동 정렬된 결과를 확인하세요.</p>
 
@@ -144,6 +195,22 @@
         const resetBtn = document.getElementById('resetBtn');
         const ballList = document.getElementById('ballList');
         const message = document.getElementById('message');
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        // Theme Toggle
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            const isLight = body.classList.contains('light-mode');
+            themeToggle.textContent = isLight ? '☀️' : '🌙';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+
+        // Load Theme
+        if (localStorage.getItem('theme') === 'light') {
+            body.classList.add('light-mode');
+            themeToggle.textContent = '☀️';
+        }
 
         function generateLottoNumbers() {
             const numbers = new Set();
@@ -163,7 +230,6 @@
 
         function showMessage(text, type = 'normal') {
             message.textContent = text;
-            message.style.color = type === 'error' ? '#fecaca' : '#e2e8f0';
         }
 
         generateBtn.addEventListener('click', () => {
