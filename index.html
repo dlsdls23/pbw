@@ -161,10 +161,7 @@
             box-shadow: 0 0 15px rgba(255, 234, 0, 0.6);
             margin-bottom: 15px;
             display: none;
-            transition: transform 0.1s;
-        }
-        .btn-cashout:active {
-            transform: scale(0.97);
+            z-index: 50;
         }
 
         .mega-celebration-overlay {
@@ -187,13 +184,10 @@
             border-radius: 16px;
             box-shadow: 0 0 40px rgba(255, 234, 0, 0.8);
             animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            word-break: keep-all;
             cursor: pointer;
         }
 
-        @keyframes popIn {
-            to { transform: translate(-50%, -50%) scale(1); }
-        }
+        @keyframes popIn { to { transform: translate(-50%, -50%) scale(1); } }
 
         #status-text {
             position: absolute;
@@ -226,7 +220,6 @@
         .bet-section { display: flex; gap: 15px; margin-bottom: 15px; }
         .bet-card { flex: 1; background: #1f1f34; border: 2px solid #3d3d5e; border-radius: 8px; padding: 12px; text-align: center; }
         .choice-btns { display: flex; gap: 8px; }
-        
         .choice-btns button {
             flex: 1; background: #2d2d44; color: #fff; border: 2px solid #fff; padding: 8px 0;
             font-family: 'DungGeunMo', sans-serif; font-size: 1.1rem; cursor: pointer; border-radius: 4px;
@@ -245,165 +238,41 @@
             flex-wrap: wrap;
         }
         .quick-bet-container button {
-            flex: 1;
-            min-width: 60px;
-            background: #2a2a40;
-            color: #fff;
-            border: 1px solid #555;
-            padding: 6px 0;
-            font-family: 'DungGeunMo', sans-serif;
-            font-size: 0.9rem;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.1s;
+            flex: 1; min-width: 60px; background: #2a2a40; color: #fff; border: 1px solid #555; padding: 6px 0;
+            font-family: 'DungGeunMo', sans-serif; font-size: 0.9rem; cursor: pointer; border-radius: 4px;
         }
-        .quick-bet-container button:hover {
-            background: #3d3d5e;
-            border-color: #fff;
-        }
-        .quick-bet-container button.btn-allin {
-            background: var(--neon-pink);
-            border-color: #fff;
-            color: #fff;
-            font-weight: bold;
-            text-shadow: 0 0 5px rgba(0,0,0,0.5);
-        }
-        .quick-bet-container button.btn-allin:hover {
-            background: #ff3399;
-        }
-        .quick-bet-container button.btn-reset-bet {
-            background: #44445c;
-            border-color: #aaa;
-            color: #fff;
-        }
-        .quick-bet-container button.btn-reset-bet:hover {
-            background: #5a5a7d;
-        }
+        .quick-bet-container button.btn-allin { background: var(--neon-pink); border-color: #fff; color: #fff; font-weight: bold; }
+        .quick-bet-container button.btn-reset-bet { background: #44445c; border-color: #aaa; color: #fff; }
 
-        #team-panel {
-            background: #111122;
-            border: 2px solid #4d4d7a;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 15px;
-        }
-        .team-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            gap: 5px;
-        }
-        .team-header div {
-            display: flex;
-            gap: 4px;
-        }
-        .team-header button {
-            background: #3a3a5e; color: #fff; border: 1px solid #777; padding: 4px 6px;
-            font-family: 'DungGeunMo', sans-serif; cursor: pointer; border-radius: 4px; font-size: 0.85rem;
-        }
-        .team-title {
-            font-size: 1.05rem;
-            color: var(--neon-pink);
-            margin: 0;
-        }
-        .btn-reset-match {
-            background: #ff0055 !important;
-            color: #fff;
-            border: 1px solid #fff;
-            padding: 4px 6px;
-            font-family: 'DungGeunMo', sans-serif;
-            font-size: 0.85rem;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        .member-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            margin-bottom: 8px;
-            background: #1a1a2e;
-            padding: 6px 10px;
-            border-radius: 4px;
-        }
-        .member-row.saved {
-            opacity: 0.4;
-            background: #2b0d18;
-            border: 1px solid var(--neon-pink);
-        }
-        .member-row.saved .member-idx { color: var(--neon-gray); text-decoration: line-through; }
+        #team-panel { background: #111122; border: 2px solid #4d4d7a; border-radius: 8px; padding: 12px; margin-bottom: 15px; }
+        .team-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 5px; }
+        .team-header button { background: #3a3a5e; color: #fff; border: 1px solid #777; padding: 4px 6px; font-family: 'DungGeunMo'; cursor: pointer; border-radius: 4px; font-size: 0.85rem; }
+        .team-title { font-size: 1.05rem; color: var(--neon-pink); margin: 0; }
+        .member-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; background: #1a1a2e; padding: 6px 10px; border-radius: 4px; }
+        .member-row.saved { opacity: 0.4; background: #2b0d18; border: 1px solid var(--neon-pink); }
         .member-idx { color: var(--neon-blue); font-weight: bold; width: 25px; }
-        .member-input {
-            background: #000; border: 1px solid #555; color: #fff;
-            font-family: 'DungGeunMo', sans-serif; padding: 4px; width: 80px; border-radius: 4px;
-        }
-        .team-choice-btns { display: flex; align-items: center; gap: 4px; }
-        .team-target-input {
-            background: #000; border: 1px solid #fff; color: var(--neon-green);
-            font-family: 'DungGeunMo', sans-serif; font-size: 1rem; padding: 4px; width: 80px; text-align: center; border-radius: 4px;
-        }
+        .member-input { background: #000; border: 1px solid #555; color: #fff; font-family: 'DungGeunMo'; padding: 4px; width: 80px; border-radius: 4px; }
+        .team-target-input { background: #000; border: 1px solid #fff; color: var(--neon-green); font-family: 'DungGeunMo'; font-size: 1rem; padding: 4px; width: 80px; text-align: center; border-radius: 4px; }
 
-        .team-action-zone {
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        .btn-confirm-team {
-            width: 100%;
-            background: var(--neon-green);
-            color: #000;
-            border: 2px solid #fff;
-            padding: 12px 0;
-            font-family: 'DungGeunMo', sans-serif;
-            font-size: 1.3rem;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
-            transition: all 0.15s;
-        }
-
+        .team-action-zone { margin-bottom: 15px; text-align: center; }
+        .btn-confirm-team { width: 100%; background: var(--neon-green); color: #000; border: 2px solid #fff; padding: 12px 0; font-family: 'DungGeunMo'; font-size: 1.3rem; font-weight: bold; cursor: pointer; border-radius: 8px; }
+        
         .disabled-panel { opacity: 0.35; pointer-events: none; }
 
         .result-panel { background: #252538; border: 2px dashed #fff; border-radius: 8px; padding: 15px; display: none; margin-top: 15px;}
         .result-title { font-size: 1.3rem; text-align: center; margin-bottom: 10px; color: var(--neon-yellow); }
         .result-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 1.1rem; }
-        
-        #team-round-report {
-            background: #000; padding: 8px; border-radius: 4px; font-size: 0.95rem; line-height: 1.4; color: #9fffff; margin-top: 5px;
-            border: 1px solid #3d3d5e;
-        }
+        #team-round-report { background: #000; padding: 8px; border-radius: 4px; font-size: 0.95rem; color: #9fffff; margin-top: 5px; border: 1px solid #3d3d5e; }
 
         .history-section { margin-top: 15px; background: #11111e; border: 2px solid #3d3d5e; border-radius: 8px; padding: 12px; width: 100%; box-sizing: border-box; }
         .history-title { font-size: 1rem; color: var(--neon-blue); margin-bottom: 8px; text-align: center; }
         .history-list { display: flex; flex-direction: row; gap: 6px; overflow-x: auto; padding-bottom: 5px; white-space: nowrap; }
         .history-item { background: #000; border: 1px solid #444; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; display: inline-block; }
-
         .badge { padding: 2px 6px; border-radius: 4px; font-weight: bold; }
         .badge.bg-odd { background: var(--neon-pink); color: white; }
         .badge.bg-even { background: var(--neon-blue); color: white; }
 
-        .btn-reset-balance {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--neon-yellow);
-            color: #000;
-            border: 2px solid #000;
-            padding: 10px 16px;
-            font-family: 'DungGeunMo', sans-serif;
-            font-size: 0.95rem;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            z-index: 99999;
-            transition: all 0.1s;
-        }
-        .btn-reset-balance:hover {
-            background: #fff;
-            transform: scale(1.05);
-        }
+        .btn-reset-balance { position: fixed; bottom: 20px; right: 20px; background: var(--neon-yellow); color: #000; border: 2px solid #000; padding: 10px 16px; font-family: 'DungGeunMo'; font-size: 0.95rem; font-weight: bold; cursor: pointer; border-radius: 30px; z-index: 99999; }
     </style>
 </head>
 <body>
@@ -430,13 +299,12 @@
             <div id="status-text">배팅을 준비하세요!</div>
         </div>
 
-        <button class="btn-cashout" id="btn-cashout" onclick="triggerManualCashOut()">💸 지금 탈출하기 (적립: 0원)</button>
+        <button class="btn-cashout" id="btn-cashout" onclick="triggerSoloCashOutLogic()">💸 지금 탈출하기 (적립: 0원)</button>
 
         <div id="solo-ui-group">
             <div class="target-section" style="border: 2px solid var(--neon-yellow);">
                 <label style="color: var(--neon-yellow); font-weight: bold;">🪙 베팅 머니 설정 :</label>
                 <input type="number" id="solo-bet-input" value="0" min="0" style="color: var(--neon-yellow); font-weight:bold; border-color:var(--neon-yellow);"> 원
-                
                 <div class="quick-bet-container">
                     <button type="button" onclick="quickSetBet(10000)">+1만</button>
                     <button type="button" onclick="quickSetBet(35000)">+3.5만</button>
@@ -445,8 +313,7 @@
                     <button type="button" class="btn-reset-bet" onclick="quickSetBet('RESET')">초기화</button>
                 </div>
             </div>
-
-            <div class="mode-selection" id="mode-selector-zone">
+            <div class="mode-selection">
                 <label style="cursor:pointer;"><input type="radio" name="gameMode" value="OE" checked onchange="switchSoloSubMode()"> 홀짝 예측 (1.98배)</label>
                 <label style="cursor:pointer;"><input type="radio" name="gameMode" value="GRAPH" onchange="switchSoloSubMode()"> 실시간 배수 탈출</label>
             </div>
@@ -463,37 +330,31 @@
                     <label style="color: var(--neon-green);">목표 자동 탈출 배수 :</label>
                     <input type="number" step="0.01" id="target-input" value="" placeholder="공백 시 수동탈출">
                 </div>
-                <button id="btn-graph-bet" onclick="placeGraphBet()" style="width: 100%; background: var(--neon-green); color: #000; border: 2px solid #fff; padding: 10px 0; font-family: 'DungGeunMo', sans-serif; font-size: 1.1rem; font-weight: bold; cursor: pointer; border-radius: 6px; box-shadow: 0 0 10px rgba(57, 255, 20, 0.3); transition: all 0.15s;">📈 배수 탈출 배팅하기</button>
+                <button id="btn-graph-bet" onclick="placeGraphBet()" style="width: 100%; background: var(--neon-green); color: #000; border: 2px solid #fff; padding: 10px 0; font-family: 'DungGeunMo'; font-size: 1.1rem; font-weight: bold; cursor: pointer; border-radius: 6px;">📈 배수 탈출 배팅하기</button>
             </div>
         </div>
 
         <div id="team-ui-group" style="display: none;">
             <div id="team-panel">
                 <div class="team-header">
-                    <span class="team-title" id="team-board-title">☠️ 제 1라운드 독박 서바이벌</span>
+                    <span class="team-title" id="team-board-title">☠️ 독박 서바이벌 대기</span>
                     <div>
                         <button onclick="addMember()">➕ 참가자</button>
                         <button onclick="removeMember()">➖ 참가자</button>
-                        <button class="btn-reset-match" onclick="forceResetWholeMatch()">🔄 초기화</button>
+                        <button style="background: #ff0055;" onclick="forceResetWholeMatch()">🔄 초기화</button>
                     </div>
                 </div>
                 <div id="member-list-box"></div>
             </div>
             <div class="team-action-zone">
-                <button class="btn-confirm-team" id="btn-team-submit" onclick="handleTeamAction()">🚨 준비 완료 / 수정 잠금</button>
+                <button class="btn-confirm-team" id="btn-team-submit" onclick="handleTeamAction()">🚨 준비 완료 / 단체전 시작</button>
             </div>
         </div>
 
         <div class="result-panel" id="result-area">
             <div class="result-title">━━ 경기 결과 판정 ━━</div>
-            <div class="result-row">
-                <span>최종 종료 배수:</span>
-                <span id="res-final-mult" style="font-weight:bold;">1.00x</span>
-            </div>
-            <div class="result-row">
-                <span>마지막 자리 숫자:</span>
-                <span id="res-last-digit">0</span>
-            </div>
+            <div class="result-row"><span>최종 종료 배수:</span> <span id="res-final-mult" style="font-weight:bold;">1.00x</span></div>
+            <div class="result-row"><span>마지막 자리 숫자:</span> <span id="res-last-digit">0</span></div>
             <hr style="border: 1px dashed #3d3d5e; margin: 12px 0;">
             <div class="result-row" style="flex-direction:column; gap:5px;">
                 <span style="font-weight: bold; color:var(--neon-yellow);">판정 브리핑:</span>
@@ -503,49 +364,63 @@
         </div>
 
         <div class="history-section">
-            <div class="history-title">⏱️ 최근 20경기 기록 (가로 정렬)</div>
-            <div class="history-list" id="history-box">
-                <div style="color:#555; font-size:0.9rem;">기록이 없습니다.</div>
-            </div>
+            <div class="history-title">⏱️ 최근 20경기 기록 (개인전 전용)</div>
+            <div class="history-list" id="history-box"><div style="color:#555; font-size:0.9rem;">기록이 없습니다.</div></div>
         </div>
     </div>
 
     <button class="btn-reset-balance" onclick="resetUserBalance()">💵 다빈에게 돈빌리기</button>
 
     <script>
+        // 공용 기본 스키마
         let userBalance = 100000;
-        let currentSoloBet = 0;   
-        let hasCashedOut = false;  
-        let soloBetLocked = false; 
-
         let mainTab = 'SOLO'; 
-        let gameState = 'READY'; 
-        let currentMultiplier = 1.00;
-        let crashPoint = 0;
-        let gameLoopId = null;
-        let countdownLoopId = null;
         let historyData = [];
-        let tickCounter = 0; 
-        let gridOffset = 0; 
 
-        let selectedSoloOE = null;
+        // 👤 [엔진 1] 개인전 게임 상태 객체
+        let soloGame = {
+            state: 'COUNTDOWN', // COUNTDOWN, RUNNING, CRASHED
+            multiplier: 1.00,
+            crashPoint: 0,
+            tickCounter: 0,
+            gridOffset: 0,
+            points: [{tick: 0, mult: 1.00}],
+            countdownLeft: 5.00,
+            betAmount: 0,
+            isBetLocked: false,
+            selectedOE: null,
+            hasCashedOut: false,
+            subMode: 'OE',
+            statusText: '배팅을 준비하세요!',
+            statusColor: 'var(--neon-yellow)'
+        };
 
-        let teamMembers = [
-            { id: 1, name: '유저1', alive: true },
-            { id: 2, name: '유저2', alive: true },
-            { id: 3, name: '유저3', alive: true }
-        ];
+        // ☠️ [엔진 2] 단체전 게임 상태 객체 (완전 격리)
+        let teamGame = {
+            state: 'IDLE', // IDLE, COUNTDOWN, RUNNING, FINISHED
+            multiplier: 1.00,
+            crashPoint: 0,
+            tickCounter: 0,
+            gridOffset: 0,
+            points: [{tick: 0, mult: 1.00}],
+            countdownLeft: 5.00,
+            statusText: '✍️ 제 1라운드 준비!',
+            statusColor: 'var(--neon-yellow)'
+        };
+
+        // 단체전 회원 구조
+        let teamMembers = [{ id: 1, name: '유저1', alive: true }, { id: 2, name: '유저2', alive: true }, { id: 3, name: '유저3', alive: true }];
         let teamRound = 1;
 
+        // 캔버스 초기화
         const canvas = document.getElementById('graphCanvas');
         const ctx = canvas.getContext('2d');
-        let points = []; 
-
         const paddingLeft = 50;
         const paddingBottom = 25;
         const plotWidth = canvas.width - paddingLeft - 15;
         const plotHeight = canvas.height - paddingBottom - 15;
 
+        // DOM 캐싱
         const multDisplay = document.getElementById('multiplier');
         const countdownDisplay = document.getElementById('countdown-timer');
         const megaBanner = document.getElementById('mega-banner');
@@ -555,30 +430,34 @@
         const historyBox = document.getElementById('history-box');
         const cashoutBtn = document.getElementById('btn-cashout');
 
+        // 인터벌 ID 저장소
+        let soloCountdownInterval = null;
+        let soloGameInterval = null;
+        let teamCountdownInterval = null;
+        let teamGameInterval = null;
+
+        // 초기 시작 및 명단 생성
         buildTeamUI();
         updateBalanceDOM();
-        switchMainTab('SOLO');
+        loopSoloCountdown(); // 개인전 무한 루프 시작
 
         function updateBalanceDOM() {
             document.getElementById('balance-amount').innerText = userBalance.toLocaleString();
         }
 
         function resetUserBalance() {
-            if (confirm("다빈이에게 대출을 신청하시겠습니까? 💸\n승인 시 보유 머니가 즉시 100,000원으로 수혈됩니다.")) {
+            if (confirm("다빈이에게 대출을 신청하시겠습니까? 💸\n승인 시 보유 머니가 즉시 100,000원으로 충전됩니다.")) {
                 userBalance = 100000;
                 updateBalanceDOM();
             }
         }
 
         function quickSetBet(amount) {
-            if (gameState !== 'READY' || soloBetLocked) return;
-            
+            if (soloGame.state !== 'COUNTDOWN' || soloGame.isBetLocked) return;
             const betInput = document.getElementById('solo-bet-input');
-            if (amount === 'ALL') {
-                betInput.value = userBalance;
-            } else if (amount === 'RESET') {
-                betInput.value = 0;
-            } else {
+            if (amount === 'ALL') betInput.value = userBalance;
+            else if (amount === 'RESET') betInput.value = 0;
+            else {
                 let currentVal = parseFloat(betInput.value) || 0;
                 let newVal = currentVal + amount;
                 if (newVal > userBalance) newVal = userBalance;
@@ -586,45 +465,45 @@
             }
         }
 
+        // ==========================================
+        // 🔄 탭 전환 핸들러 (서로 독립된 상태를 투영)
+        // ==========================================
         function switchMainTab(tab) {
-            if (gameState !== 'READY' && gameState !== 'TEAM_WAITING' && gameState !== 'FINISHED') return;
             mainTab = tab;
-            
             document.getElementById('tab-solo').className = (tab === 'SOLO') ? 'tab-btn active' : 'tab-btn';
             document.getElementById('tab-team').className = (tab === 'TEAM') ? 'tab-btn active' : 'tab-btn';
 
-            clearInterval(countdownLoopId);
-            countdownDisplay.style.display = 'none';
-            megaBanner.style.display = 'none';
-            cashoutBtn.style.display = 'none';
-
             if (tab === 'SOLO') {
-                if (gameState === 'FINISHED') gameState = 'READY';
                 document.getElementById('solo-ui-group').style.display = 'block';
                 document.getElementById('team-ui-group').style.display = 'none';
                 switchSoloSubMode();
-                startSoloAutoCountdown(); 
+                
+                if (soloGame.state === 'CRASHED') {
+                    resultArea.style.display = 'block';
+                    screenBox.classList.add('shake');
+                } else {
+                    resultArea.style.display = 'none';
+                    screenBox.classList.remove('shake');
+                }
             } else {
                 document.getElementById('solo-ui-group').style.display = 'none';
                 document.getElementById('team-ui-group').style.display = 'block';
-                
-                if (gameState !== 'FINISHED') gameState = 'TEAM_WAITING'; 
-                
-                document.getElementById('team-ui-group').classList.remove('disabled-panel');
                 refreshTeamUIState();
                 
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                drawGrid(1.20, 30); 
-                if (gameState !== 'FINISHED') {
-                    statusDisplay.style.color = 'var(--neon-yellow)';
-                    statusDisplay.innerText = `✍️ 세팅 완료 후 아래 [준비 완료] 버튼을 누르세요!`;
+                if (teamGame.state === 'FINISHED') {
+                    resultArea.style.display = 'block';
+                    screenBox.classList.add('shake');
+                } else {
+                    resultArea.style.display = 'none';
+                    screenBox.classList.remove('shake');
                 }
             }
+            updateUIElements();
         }
 
         function switchSoloSubMode() {
-            if (mainTab !== 'SOLO') return;
             const mode = document.querySelector('input[name="gameMode"]:checked').value;
+            soloGame.subMode = mode;
             if (mode === 'OE') {
                 document.getElementById('oe-panel').classList.remove('disabled-panel');
                 document.getElementById('graph-panel').classList.add('disabled-panel');
@@ -634,71 +513,192 @@
             }
         }
 
+        // ==========================================
+        // 👤 [엔진 1 Logic] 개인전 모드 루프 제어
+        // ==========================================
+        function loopSoloCountdown() {
+            soloGame.state = 'COUNTDOWN';
+            soloGame.multiplier = 1.00;
+            soloGame.tickCounter = 0;
+            soloGame.gridOffset = 0;
+            soloGame.points = [{tick: 0, mult: 1.00}];
+            soloGame.countdownLeft = 5.00;
+            soloGame.hasCashedOut = false;
+            soloGame.betAmount = 0;
+            soloGame.isBetLocked = false;
+            soloGame.selectedOE = null;
+
+            document.getElementById('btn-odd').className = '';
+            document.getElementById('btn-even').className = '';
+            document.getElementById('btn-graph-bet').innerText = '📈 배수 탈출 배팅하기';
+            
+            soloGame.statusText = '⏳ 개인전 배팅 대기 중...';
+            soloGame.statusColor = 'var(--neon-yellow)';
+            
+            if (mainTab === 'SOLO') {
+                resultArea.style.display = 'none';
+                screenBox.classList.remove('shake');
+            }
+            updateUIElements();
+
+            let startTimestamp = performance.now();
+            soloCountdownInterval = setInterval(() => {
+                let timePassed = performance.now() - startTimestamp;
+                let timeLeft = Math.max(0, (5000 - timePassed) / 1000);
+                soloGame.countdownLeft = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(soloCountdownInterval);
+                    startSoloGame();
+                }
+                updateUIElements();
+            }, 10);
+        }
+
         function selectSoloOE(choice) {
-            if (gameState !== 'READY') return;
-            if (soloBetLocked) {
-                alert("이미 이번 라운드 배팅 배정이 완료되었습니다!");
-                return;
-            }
-
+            if (soloGame.state !== 'COUNTDOWN' || soloGame.isBetLocked) return;
             let betInputVal = parseFloat(document.getElementById('solo-bet-input').value) || 0;
-            if (betInputVal < 0) {
-                alert("배팅금액은 0원 이상이어야 합니다.");
-                return;
-            }
-            if (betInputVal > userBalance) {
-                alert("잔액이 부족합니다! 배팅 금액을 조절하세요.");
-                return;
-            }
+            if (betInputVal <= 0) return alert("베팅 금액을 입력해주세요!");
+            if (betInputVal > userBalance) return alert("잔액이 부족합니다!");
 
-            selectedSoloOE = choice;
+            soloGame.selectedOE = choice;
             document.getElementById('btn-odd').className = (choice === 'ODD') ? 'active-odd' : '';
             document.getElementById('btn-even').className = (choice === 'EVEN') ? 'active-even' : '';
-            
-            currentSoloBet = betInputVal;
-            userBalance -= currentSoloBet;
+            soloGame.betAmount = betInputVal;
+            userBalance -= soloGame.betAmount;
             updateBalanceDOM();
-            soloBetLocked = true;
-
-            statusDisplay.innerText = `🎲 홀짝 확정 완료 (${choice === 'ODD' ? '홀' : '짝'}: ${currentSoloBet.toLocaleString()}원) 대기 중...`;
-            statusDisplay.style.color = 'var(--neon-green)';
+            soloGame.isBetLocked = true;
+            soloGame.statusText = `🎲 홀짝 확정 (${choice === 'ODD' ? '홀' : '짝'}: ${soloGame.betAmount.toLocaleString()}원)`;
+            updateUIElements();
         }
 
         function placeGraphBet() {
-            if (gameState !== 'READY') {
-                alert("진행 중이거나 정산 중에는 배팅할 수 없습니다!");
-                return;
-            }
-            if (soloBetLocked) {
-                alert("이미 이번 라운드 배팅이 전송되었습니다!");
-                return;
-            }
-
+            if (soloGame.state !== 'COUNTDOWN' || soloGame.isBetLocked) return;
             let betInputVal = parseFloat(document.getElementById('solo-bet-input').value) || 0;
-            if (betInputVal < 0) {
-                alert("배팅금액은 0원 이상이어야 합니다.");
-                return;
-            }
-            if (betInputVal > userBalance) {
-                alert("잔액이 부족합니다! 금액을 수정하세요.");
-                return;
-            }
+            if (betInputVal <= 0) return alert("베팅 금액을 입력해주세요!");
+            if (betInputVal > userBalance) return alert("잔액이 부족합니다!");
 
-            currentSoloBet = betInputVal;
-            userBalance -= currentSoloBet;
+            soloGame.betAmount = betInputVal;
+            userBalance -= soloGame.betAmount;
             updateBalanceDOM();
-            soloBetLocked = true;
-
-            const btn = document.getElementById('btn-graph-bet');
-            btn.style.background = '#3a3a52';
-            btn.style.color = '#888';
-            btn.style.borderColor = '#555';
-            btn.innerText = `✅ 배팅 완료 (${currentSoloBet.toLocaleString()}원)`;
-
-            statusDisplay.innerText = `📈 그래프 배팅 완료 (${currentSoloBet.toLocaleString()}원) 대기 중...`;
-            statusDisplay.style.color = 'var(--neon-green)';
+            soloGame.isBetLocked = true;
+            document.getElementById('btn-graph-bet').innerText = `✅ 배팅 완료 (${soloGame.betAmount.toLocaleString()}원)`;
+            soloGame.statusText = `📈 배수 배팅 완료 (${soloGame.betAmount.toLocaleString()}원)`;
+            updateUIElements();
         }
 
+        function startSoloGame() {
+            soloGame.state = 'RUNNING';
+            soloGame.multiplier = 1.00;
+            soloGame.tickCounter = 0;
+            soloGame.gridOffset = 0;
+            soloGame.points = [{tick: 0, mult: 1.00}];
+            soloGame.statusText = "🚀 개인전 그래프 상승 중!";
+            soloGame.statusColor = '#fff';
+
+            const rand = Math.random();
+            if (rand < 0.02) soloGame.crashPoint = 1.00;
+            else if (rand < 0.47) soloGame.crashPoint = 1.01 + Math.random() * 1.4;
+            else if (rand < 0.87) soloGame.crashPoint = 2.40 + Math.random() * 3.6;
+            else soloGame.crashPoint = 6.00 + Math.random() * 14.0;
+
+            if (soloGame.crashPoint === 1.00) {
+                setTimeout(() => { crashSoloGame(); }, 100);
+                return;
+            }
+
+            soloGameInterval = setInterval(() => {
+                soloGame.tickCounter += 1;
+                let speed = 0.0003 + (Math.pow(soloGame.tickCounter, 2) * 0.00000012);
+                soloGame.multiplier += speed;
+                soloGame.gridOffset += soloGame.multiplier * 1.3;
+                soloGame.points.push({tick: soloGame.tickCounter, mult: soloGame.multiplier});
+
+                // 자동 익절 탈출 검사
+                if (soloGame.isBetLocked && soloGame.subMode === 'GRAPH' && !soloGame.hasCashedOut) {
+                    const targetVal = parseFloat(document.getElementById('target-input').value);
+                    if (!isNaN(targetVal) && soloGame.multiplier >= targetVal) {
+                        triggerSoloCashOutLogic();
+                    }
+                }
+
+                if (soloGame.multiplier >= soloGame.crashPoint) {
+                    soloGame.multiplier = soloGame.crashPoint;
+                    clearInterval(soloGameInterval);
+                    crashSoloGame();
+                }
+                updateUIElements();
+            }, 30);
+        }
+
+        function triggerSoloCashOutLogic() {
+            if (soloGame.state !== 'RUNNING' || soloGame.hasCashedOut || soloGame.betAmount <= 0) return;
+            soloGame.hasCashedOut = true;
+            let finalReturn = Math.floor(soloGame.betAmount * soloGame.multiplier);
+            userBalance += finalReturn;
+            updateBalanceDOM();
+            soloGame.statusText = `💰 개인전 익절 완료! +${finalReturn.toLocaleString()}원!`;
+            triggerSingleConfetti();
+            updateUIElements();
+        }
+
+        function crashSoloGame() {
+            soloGame.state = 'CRASHED';
+            const lastDigit = parseInt((soloGame.multiplier * 100).toFixed(0).slice(-1));
+            const oe = (lastDigit % 2 !== 0) ? '홀' : '짝';
+
+            let finalSummaryText = "";
+            let isWin = false;
+
+            if (soloGame.isBetLocked) {
+                if (soloGame.subMode === 'OE') {
+                    const mapped = (soloGame.selectedOE === 'ODD') ? '홀' : '짝';
+                    if (mapped === oe) {
+                        isWin = true;
+                        let reward = Math.floor(soloGame.betAmount * 1.98);
+                        userBalance += reward;
+                        finalSummaryText = `개인전 홀짝 적중! 🎉 +${reward.toLocaleString()}원`;
+                    } else {
+                        finalSummaryText = `개인전 낙첨 💀 -${soloGame.betAmount.toLocaleString()}원`;
+                    }
+                } else {
+                    if (soloGame.hasCashedOut) {
+                        isWin = true;
+                        finalSummaryText = "개인전 탈출 성공! 🎉";
+                    } else {
+                        finalSummaryText = `개인전 탈출 실패 💀 -${soloGame.betAmount.toLocaleString()}원`;
+                    }
+                }
+            } else {
+                finalSummaryText = "개인전 관전 종료";
+            }
+
+            soloGame.statusText = finalSummaryText;
+            soloGame.statusColor = isWin ? 'var(--neon-green)' : 'var(--neon-pink)';
+
+            if (isWin && soloGame.isBetLocked && soloGame.subMode === 'OE') triggerSingleConfetti();
+
+            updateBalanceDOM();
+            updateHistory(soloGame.multiplier, oe);
+
+            if (mainTab === 'SOLO') {
+                resultArea.style.display = 'block';
+                screenBox.classList.add('shake');
+                document.getElementById('res-final-mult').innerText = `${soloGame.multiplier.toFixed(2)}x`;
+                document.getElementById('res-last-digit').innerText = `${lastDigit} (${oe})`;
+                document.getElementById('res-final-status').innerText = finalSummaryText;
+                document.getElementById('res-final-status').style.color = isWin ? 'var(--neon-green)' : 'var(--neon-pink)';
+                document.getElementById('team-round-report').style.display = 'none';
+            }
+
+            updateUIElements();
+            setTimeout(() => { loopSoloCountdown(); }, 3000);
+        }
+
+
+        // ==========================================
+        // ☠️ [엔진 2 Logic] 독박 단체전 모드 루프 제어
+        // ==========================================
         function buildTeamUI() {
             const box = document.getElementById('member-list-box');
             box.innerHTML = '';
@@ -706,7 +706,6 @@
                 const row = document.createElement('div');
                 row.className = 'member-row';
                 row.id = `member-row-${m.id}`;
-
                 row.innerHTML = `
                     <div style="display:flex; align-items:center; gap:8px;">
                         <span class="member-idx">${m.id}</span>
@@ -722,11 +721,8 @@
         }
 
         function addMember() {
-            if (gameState !== 'TEAM_WAITING') return;
-            if (teamMembers.length >= 10) {
-                alert("참가자는 최대 10명까지만 가능합니다.");
-                return;
-            }
+            if (teamGame.state === 'COUNTDOWN' || teamGame.state === 'RUNNING') return;
+            if (teamMembers.length >= 10) return;
             const nextId = teamMembers.length > 0 ? Math.max(...teamMembers.map(m => m.id)) + 1 : 1;
             teamMembers.push({ id: nextId, name: `유저${nextId}`, alive: true });
             buildTeamUI();
@@ -734,11 +730,8 @@
         }
 
         function removeMember() {
-            if (gameState !== 'TEAM_WAITING') return;
-            if (teamMembers.length <= 2) {
-                alert("참가자는 최소 2명 이상이어야 합니다.");
-                return;
-            }
+            if (teamGame.state === 'COUNTDOWN' || teamGame.state === 'RUNNING') return;
+            if (teamMembers.length <= 2) return;
             teamMembers.pop();
             buildTeamUI();
             refreshTeamUIState();
@@ -751,39 +744,34 @@
 
         function refreshTeamUIState() {
             let endangeredCount = teamMembers.filter(v => v.alive).length;
-            document.getElementById('team-board-title').innerText = `☠️ 제 1라운드 독박 서바이벌 (${endangeredCount}명 잔류)`;
-            
+            document.getElementById('team-board-title').innerText = `☠️ 제 ${teamRound}라운드 독박 서바이벌 (${endangeredCount}명 잔류)`;
             const submitBtn = document.getElementById('btn-team-submit');
             
-            if (gameState === 'FINISHED') {
+            if (teamGame.state === 'COUNTDOWN' || teamGame.state === 'RUNNING') {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = "0.5";
+                submitBtn.innerText = "🔒 단체전 진행 중...";
+            } else if (teamGame.state === 'FINISHED') {
                 if (endangeredCount > 1) {
                     submitBtn.disabled = false;
                     submitBtn.style.opacity = "1";
                     submitBtn.style.background = "var(--neon-blue)";
-                    submitBtn.innerText = `⏭️ 다음 라운드 진행하기 (남은 인원: ${endangeredCount}명)`;
+                    submitBtn.innerText = `⏭️ 다음 라운드 진행 (${endangeredCount}명)`;
                 } else {
                     submitBtn.disabled = true;
-                    submitBtn.style.opacity = "0.5";
-                    submitBtn.style.background = "#333";
-                    submitBtn.innerText = "🏆 최종 독박 확정! (초기화 필수)";
+                    submitBtn.innerText = "🏆 최종 독박 확정!";
                 }
-            } else if (gameState === 'READY' || gameState === 'RUNNING') {
-                submitBtn.disabled = true;
-                submitBtn.style.opacity = "0.5";
-                submitBtn.style.background = "#222";
-                submitBtn.innerText = "🔒 수정 잠금 (그래프 진행 중)";
             } else { 
                 submitBtn.disabled = false;
                 submitBtn.style.opacity = "1";
                 submitBtn.style.background = "var(--neon-green)";
-                submitBtn.innerText = "🚨 준비 완료 / 수정 잠금";
+                submitBtn.innerText = "🚨 준비 완료 / 단체전 시작";
             }
 
             teamMembers.forEach(m => {
                 const row = document.getElementById(`member-row-${m.id}`);
                 const nameInp = document.getElementById(`member-name-${m.id}`);
                 const targetInp = document.getElementById(`target-team-${m.id}`);
-
                 if (!row || !nameInp || !targetInp) return;
 
                 if (!m.alive) {
@@ -791,515 +779,311 @@
                     nameInp.disabled = true;
                     targetInp.disabled = true;
                 } else {
-                    if (gameState === 'TEAM_WAITING') {
-                        row.className = 'member-row';
-                        nameInp.disabled = false; 
-                        targetInp.disabled = false; 
-                    } else {
-                        row.className = 'member-row';
-                        nameInp.disabled = true;
-                        targetInp.disabled = true;
-                    }
+                    nameInp.disabled = (teamGame.state === 'COUNTDOWN' || teamGame.state === 'RUNNING');
+                    targetInp.disabled = (teamGame.state === 'COUNTDOWN' || teamGame.state === 'RUNNING');
                 }
             });
         }
 
         function handleTeamAction() {
-            if (gameState === 'TEAM_WAITING') {
-                confirmAndLaunchCountdown();
-            } else if (gameState === 'FINISHED') {
-                let endangeredCount = teamMembers.filter(v => v.alive).length;
-                if (endangeredCount > 1) {
-                    advanceToNextRound();
-                }
+            if (teamGame.state === 'IDLE') {
+                let endangered = teamMembers.filter(m => m.alive);
+                let unchosen = endangered.filter(m => {
+                    const input = document.getElementById(`target-team-${m.id}`);
+                    return !input || input.value.trim() === '';
+                });
+                if (unchosen.length > 0) return alert("모든 살아있는 생존자의 목표 배수를 적어주세요!");
+
+                startTeamCountdown();
+            } else if (teamGame.state === 'FINISHED') {
+                advanceToNextRound();
             }
         }
 
-        function startSoloAutoCountdown() {
-            gameState = 'READY';
-            hasCashedOut = false;
-            currentSoloBet = 0;
-            soloBetLocked = false; 
-            selectedSoloOE = null;
+        function startTeamCountdown() {
+            teamGame.state = 'COUNTDOWN';
+            teamGame.multiplier = 1.00;
+            teamGame.tickCounter = 0;
+            teamGame.gridOffset = 0;
+            teamGame.points = [{tick: 0, mult: 1.00}];
+            teamGame.countdownLeft = 5.00;
+            teamGame.statusText = `💥 단체전 확정! 5초 후 발사!`;
+            teamGame.statusColor = 'var(--neon-yellow)';
 
-            document.getElementById('btn-odd').className = '';
-            document.getElementById('btn-even').className = '';
-            
-            const btnGraph = document.getElementById('btn-graph-bet');
-            btnGraph.style.background = 'var(--neon-green)';
-            btnGraph.style.color = '#000';
-            btnGraph.style.borderColor = '#fff';
-            btnGraph.innerText = '📈 배수 탈출 배팅하기';
+            if (mainTab === 'TEAM') {
+                resultArea.style.display = 'none';
+                screenBox.classList.remove('shake');
+            }
+            refreshTeamUIState();
+            updateUIElements();
 
-            let duration = 5000; 
             let startTimestamp = performance.now();
-            
-            multDisplay.style.display = 'none'; 
-            countdownDisplay.style.display = 'block'; 
-            megaBanner.style.display = 'none';
-            cashoutBtn.style.display = 'none';
-
-            document.getElementById('solo-ui-group').classList.remove('disabled-panel');
-            document.getElementById('tab-solo').disabled = false;
-            document.getElementById('tab-team').disabled = false;
-
-            switchSoloSubMode();
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawGrid(1.20, 30); 
-
-            statusDisplay.style.color = 'var(--neon-yellow)';
-            statusDisplay.innerText = `⏳ 5초 내에 배팅을 완료하세요! (미입력 시 패스)`;
-
-            countdownLoopId = setInterval(() => {
+            teamCountdownInterval = setInterval(() => {
                 let timePassed = performance.now() - startTimestamp;
-                let timeLeft = Math.max(0, (duration - timePassed) / 1000);
-                countdownDisplay.innerText = timeLeft.toFixed(2); 
-                
+                let timeLeft = Math.max(0, (5000 - timePassed) / 1000);
+                teamGame.countdownLeft = timeLeft;
+
                 if (timeLeft <= 0) {
-                    clearInterval(countdownLoopId);
-                    countdownDisplay.style.display = 'none'; 
-                    document.getElementById('solo-ui-group').classList.add('disabled-panel');
-                    document.getElementById('tab-solo').disabled = true;
-                    document.getElementById('tab-team').disabled = true;
-                    startGame();
+                    clearInterval(teamCountdownInterval);
+                    startTeamGame();
                 }
+                updateUIElements();
             }, 10);
         }
 
-        function confirmAndLaunchCountdown() {
-            if (gameState !== 'TEAM_WAITING') return;
+        function startTeamGame() {
+            teamGame.state = 'RUNNING';
+            teamGame.multiplier = 1.00;
+            teamGame.tickCounter = 0;
+            teamGame.gridOffset = 0;
+            teamGame.points = [{tick: 0, mult: 1.00}];
+            teamGame.statusText = "🚀 단체전 그래프 상승 중!";
+            teamGame.statusColor = 'var(--neon-green)';
 
-            let endangered = teamMembers.filter(m => m.alive);
-            let unchosen = endangered.filter(m => {
-                const input = document.getElementById(`target-team-${m.id}`);
-                return !input || input.value.trim() === '';
-            });
-            
-            if (unchosen.length > 0) {
-                alert(`아직 목표 배수를 입력하지 않은 참가자가 있습니다!\n남은 인원: ${unchosen.map(m => m.name).join(', ')}`);
-                return;
-            }
-
-            gameState = 'READY';
-            document.getElementById('team-ui-group').classList.add('disabled-panel');
-            document.getElementById('tab-solo').disabled = true;
-            document.getElementById('tab-team').disabled = true;
-            
             refreshTeamUIState();
-
-            let duration = 5000; 
-            let startTimestamp = performance.now();
-            countdownDisplay.style.display = 'block';
-            megaBanner.style.display = 'none';
-            statusDisplay.innerText = `💥 확정 완료! 5초 후 그래프가 발사됩니다!`;
-
-            countdownLoopId = setInterval(() => {
-                let timePassed = performance.now() - startTimestamp;
-                let timeLeft = Math.max(0, (duration - timePassed) / 1000);
-                countdownDisplay.innerText = timeLeft.toFixed(2);
-                
-                if (timeLeft <= 0) {
-                    clearInterval(countdownLoopId);
-                    countdownDisplay.style.display = 'none'; 
-                    startGame();
-                }
-            }, 10);
-        }
-
-        function advanceToNextRound() {
-            gameState = 'TEAM_WAITING';
-            teamMembers.forEach(m => {
-                const input = document.getElementById(`target-team-${m.id}`);
-                if (input && m.alive) input.value = '';
-            });
-            
-            document.getElementById('team-ui-group').classList.remove('disabled-panel');
-            document.getElementById('tab-solo').disabled = false;
-            document.getElementById('tab-team').disabled = false;
-            
-            resultArea.style.display = 'none';
-            screenBox.classList.remove('shake');
-            multDisplay.style.display = 'none';
-            countdownDisplay.style.display = 'none';
-            megaBanner.style.display = 'none';
-            
-            refreshTeamUIState();
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawGrid(1.20, 30);
-            statusDisplay.style.color = 'var(--neon-yellow)';
-            statusDisplay.innerText = `✍️ 제 ${teamRound}라운드! 목표 배수를 기입 후 확정하세요!`;
-        }
-
-        function forceResetWholeMatch() {
-            clearInterval(gameLoopId);
-            clearInterval(countdownLoopId);
-            teamRound = 1;
-            teamMembers.forEach(m => { m.alive = true; });
-            
-            gameState = 'TEAM_WAITING';
-            document.getElementById('team-ui-group').classList.remove('disabled-panel');
-            document.getElementById('tab-solo').disabled = false;
-            document.getElementById('tab-team').disabled = false;
-            
-            buildTeamUI();
-            refreshTeamUIState();
-            
-            teamMembers.forEach(m => {
-                const input = document.getElementById(`target-team-${m.id}`);
-                if (input) input.value = '';
-            });
-            
-            resultArea.style.display = 'none';
-            screenBox.classList.remove('shake');
-            multDisplay.style.display = 'none';
-            countdownDisplay.style.display = 'none';
-            megaBanner.style.display = 'none';
-            
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawGrid(1.20, 30);
-            statusDisplay.style.color = 'var(--neon-yellow)';
-            statusDisplay.innerText = `🔄 게임이 완벽히 리셋되었습니다!`;
-        }
-
-        function startGame() {
-            gameState = 'RUNNING';
-            currentMultiplier = 1.00; 
-            tickCounter = 0; 
-            gridOffset = 0; 
-            
-            // 원점(0초, 1.00배)에서 그래프가 칼같이 출발하도록 고정 초기화
-            points = [{tick: 0, mult: 1.00}]; 
-            
-            resultArea.style.display = 'none';
-            screenBox.classList.remove('shake');
-            megaBanner.style.display = 'none';
-            
-            multDisplay.innerText = '1.00x';
-            multDisplay.style.color = 'var(--neon-green)';
-            multDisplay.style.display = 'block'; 
-
-            if (mainTab === 'SOLO') {
-                const mode = document.querySelector('input[name="gameMode"]:checked').value;
-                if (!soloBetLocked) currentSoloBet = 0;
-
-                if (mode === 'GRAPH' && currentSoloBet > 0) {
-                    cashoutBtn.style.display = 'block';
-                    cashoutBtn.disabled = false;
-                    cashoutBtn.style.opacity = '1';
-                    cashoutBtn.innerText = `💸 지금 탈출하기 (적립: ${currentSoloBet.toLocaleString()}원)`;
-                }
-            }
+            updateUIElements();
 
             const rand = Math.random();
-            if (rand < 0.02) {
-                crashPoint = 1.00; // 즉시 크래시 최하단 기준 변경
-            } else if (rand < 0.47) {
-                crashPoint = 1.01 + Math.random() * 1.4;
-            } else if (rand < 0.87) {
-                crashPoint = 2.40 + Math.random() * 3.6;
-            } else {
-                crashPoint = 6.00 + Math.random() * 14.0;
-            }
+            if (rand < 0.02) teamGame.crashPoint = 1.00;
+            else if (rand < 0.47) teamGame.crashPoint = 1.01 + Math.random() * 1.4;
+            else if (rand < 0.87) teamGame.crashPoint = 2.40 + Math.random() * 3.6;
+            else teamGame.crashPoint = 6.00 + Math.random() * 14.0;
 
-            if (crashPoint === 1.00) {
-                currentMultiplier = 1.00;
-                multDisplay.innerText = "1.00x";
-                setTimeout(() => { crashGame(); }, 100);
+            if (teamGame.crashPoint === 1.00) {
+                setTimeout(() => { crashTeamGame(); }, 100);
                 return;
             }
 
-            statusDisplay.innerText = "🚀 그래프 곡선 상승 중!";
-            statusDisplay.style.color = 'var(--neon-blue)';
+            teamGameInterval = setInterval(() => {
+                teamGame.tickCounter += 1;
+                let speed = 0.0003 + (Math.pow(teamGame.tickCounter, 2) * 0.00000012);
+                teamGame.multiplier += speed;
+                teamGame.gridOffset += teamGame.multiplier * 1.3;
+                teamGame.points.push({tick: teamGame.tickCounter, mult: teamGame.multiplier});
 
-            gameLoopId = setInterval(tick, 30); 
-        }
-
-        function tick() {
-            tickCounter += 1;
-            let speed = 0.0003 + (Math.pow(tickCounter, 2) * 0.00000012);
-            currentMultiplier += speed;
-
-            gridOffset += currentMultiplier * 1.3;
-
-            if (currentMultiplier >= crashPoint) {
-                currentMultiplier = crashPoint;
-                clearInterval(gameLoopId);
-                crashGame();
-            } else {
-                multDisplay.innerText = currentMultiplier.toFixed(2) + 'x';
-                
-                if (mainTab === 'SOLO' && !hasCashedOut && currentSoloBet > 0) {
-                    const mode = document.querySelector('input[name="gameMode"]:checked').value;
-                    if (mode === 'GRAPH') {
-                        let dynamicReturn = Math.floor(currentSoloBet * currentMultiplier);
-                        cashoutBtn.innerText = `💸 지금 탈출하기 (적립: ${dynamicReturn.toLocaleString()}원 / ${currentMultiplier.toFixed(2)}x)`;
-                        
-                        const targetVal = parseFloat(document.getElementById('target-input').value);
-                        if (!isNaN(targetVal) && currentMultiplier >= targetVal) {
-                            triggerManualCashOut();
-                        }
-                    }
+                if (teamGame.multiplier >= teamGame.crashPoint) {
+                    teamGame.multiplier = teamGame.crashPoint;
+                    clearInterval(teamGameInterval);
+                    crashTeamGame();
                 }
-
-                renderGraph();
-            }
+                updateUIElements();
+            }, 30);
         }
 
-        function triggerManualCashOut() {
-            if (gameState !== 'RUNNING' || hasCashedOut || currentSoloBet <= 0) return;
-            hasCashedOut = true;
-            
-            let finalReturn = Math.floor(currentSoloBet * currentMultiplier);
-            userBalance += finalReturn;
-            updateBalanceDOM();
-
-            cashoutBtn.disabled = true;
-            cashoutBtn.style.opacity = '0.5';
-            cashoutBtn.innerText = `✅ 탈출 성공! (+${finalReturn.toLocaleString()}원)`;
-            
-            statusDisplay.innerText = `💰 익절 완료! +${finalReturn.toLocaleString()}원 획득!`;
-            statusDisplay.style.color = 'var(--neon-green)';
-            triggerSingleConfetti();
-        }
-
-        function renderGraph() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            const currentMaxY = Math.max(1.20, currentMultiplier);
-            const currentMaxTick = Math.max(30, tickCounter); 
-            
-            drawGrid(currentMaxY, currentMaxTick);
-            
-            points.push({tick: tickCounter, mult: currentMultiplier});
-
-            if (points.length < 2) return;
-
-            ctx.strokeStyle = '#ff007f'; ctx.lineWidth = 4; ctx.shadowBlur = 10; ctx.shadowColor = '#ff007f';
-            ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.beginPath();
-            
-            points.forEach((p, idx) => {
-                const reX = paddingLeft + (p.tick / currentMaxTick) * plotWidth;
-                // Y축 변환 수식을 1.0 시작 기준으로 정밀 변형
-                const reY = (canvas.height - paddingBottom) - ((p.mult - 1.0) / (currentMaxY - 1.0)) * plotHeight;
-                if (idx === 0) ctx.moveTo(reX, reY);
-                else ctx.lineTo(reX, reY);
-            });
-            ctx.stroke();
-
-            const headX = paddingLeft + (tickCounter / currentMaxTick) * plotWidth;
-            const headY = (canvas.height - paddingBottom) - ((currentMultiplier - 1.0) / (currentMaxY - 1.0)) * plotHeight;
-
-            ctx.fillStyle = '#fff';
-            ctx.beginPath();
-            ctx.arc(headX, headY, 5, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.shadowBlur = 0;
-        }
-
-        function drawGrid(currentMaxY, currentMaxTick) {
-            ctx.save();
-            
-            // 1. 배경 격자선
-            ctx.strokeStyle = '#151526'; 
-            ctx.lineWidth = 1; 
-            ctx.beginPath();
-            
-            let scrollX = gridOffset % 40;
-            for (let x = paddingLeft + 40 - scrollX; x < canvas.width; x += 40) {
-                ctx.moveTo(x, 0); 
-                ctx.lineTo(x, canvas.height - paddingBottom);
-            }
-            for (let y = canvas.height - paddingBottom - 40; y > 0; y -= 40) {
-                ctx.moveTo(paddingLeft, y); 
-                ctx.lineTo(canvas.width, y);
-            }
-            ctx.stroke();
-
-            // 2. 메인 축선
-            ctx.strokeStyle = '#3d3d5e';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(paddingLeft, 0); 
-            ctx.lineTo(paddingLeft, canvas.height - paddingBottom); 
-            ctx.lineTo(canvas.width, canvas.height - paddingBottom); 
-            ctx.stroke();
-
-            // 3. X축 눈금 가이드
-            ctx.fillStyle = '#8b8ba8';
-            ctx.font = '10px "DungGeunMo", sans-serif';
-            ctx.textBaseline = 'top';
-
-            const ticksPerSecond = 1000 / 30; 
-            const totalSecondsOnGraph = currentMaxTick / ticksPerSecond;
-
-            ctx.textAlign = 'center';
-            for (let sec = 0; sec <= totalSecondsOnGraph + 5; sec += 5) {
-                let targetTick = sec * ticksPerSecond;
-                let tickX = paddingLeft + (targetTick / currentMaxTick) * plotWidth;
-                
-                if (tickX <= canvas.width && tickX >= paddingLeft) {
-                    ctx.strokeStyle = '#3d3d5e';
-                    ctx.beginPath();
-                    ctx.moveTo(tickX, canvas.height - paddingBottom);
-                    ctx.lineTo(tickX, canvas.height - paddingBottom + 4);
-                    ctx.stroke();
-                    
-                    ctx.fillText(sec + '초', tickX, canvas.height - paddingBottom + 6);
-                }
-            }
-
-            // 4. Y축 눈금 가이드 (1.0 기준 변환 및 소수점 0.1 정밀 연산 수식)
-            ctx.textAlign = 'right';
-            ctx.textBaseline = 'middle';
-
-            if (currentMaxY <= 3.0) {
-                // 저배수 구간: 1.0부터 현재 상한선 수치까지 0.1 단위로 촘촘하게 마킹
-                for (let m = 1.0; m <= currentMaxY + 0.01; m += 0.1) {
-                    let tickY = (canvas.height - paddingBottom) - ((m - 1.0) / (currentMaxY - 1.0)) * plotHeight;
-                    if (tickY >= 0 && tickY <= canvas.height - paddingBottom) {
-                        drawYAxisLabel(m.toFixed(1), tickY);
-                    }
-                }
-            } else {
-                // 고배수 구간: 배수가 폭발적으로 커지면 글자 겹침 방지를 위해 동적 분할 마킹
-                let step = Math.ceil((currentMaxY - 1.0) / 5); 
-                for (let m = 1.0; m <= currentMaxY + step; m += step) {
-                    let tickY = (canvas.height - paddingBottom) - ((m - 1.0) / (currentMaxY - 1.0)) * plotHeight;
-                    if (tickY >= 0 && tickY <= canvas.height - paddingBottom) {
-                        drawYAxisLabel(m.toFixed(0) + '.0', tickY);
-                    }
-                }
-            }
-
-            ctx.fillStyle = '#ff007f';
-            ctx.textAlign = 'left';
-            ctx.fillText('▲배수', 5, 10);
-            
-            ctx.restore();
-        }
-
-        function drawYAxisLabel(labelText, yPos) {
-            ctx.strokeStyle = '#3d3d5e';
-            ctx.beginPath();
-            ctx.moveTo(paddingLeft - 4, yPos);
-            ctx.lineTo(paddingLeft, yPos);
-            ctx.stroke();
-            ctx.fillText(labelText, paddingLeft - 8, yPos);
-        }
-
-        function crashGame() {
-            gameState = 'FINISHED';
-            clearInterval(gameLoopId);
-            screenBox.classList.add('shake');
-            multDisplay.style.color = '#ff0055';
-            
-            const lastDigit = parseInt((currentMultiplier * 100).toFixed(0).slice(-1));
+        function crashTeamGame() {
+            teamGame.state = 'FINISHED';
+            const lastDigit = parseInt((teamGame.multiplier * 100).toFixed(0).slice(-1));
             const oe = (lastDigit % 2 !== 0) ? '홀' : '짝';
-            
-            multDisplay.innerText = `${currentMultiplier.toFixed(2)}x (${oe})`;
-
-            resultArea.style.display = 'block';
-            document.getElementById('res-final-mult').innerText = `${currentMultiplier.toFixed(2)}x`;
-            document.getElementById('res-last-digit').innerText = `${lastDigit} (${oe})`;
-
-            if (mainTab === 'SOLO') {
-                if (!hasCashedOut) cashoutBtn.style.display = 'none';
-                processSoloResult(oe);
-            } else {
-                processTeamResult(currentMultiplier);
-            }
-            
-            updateHistory(currentMultiplier, oe);
-        }
-
-        function processSoloResult(oe) {
-            const mode = document.querySelector('input[name="gameMode"]:checked').value;
-            let statusText = "";
-            let isWin = false;
-            
-            if (mode === 'OE') {
-                if (currentSoloBet <= 0 || !selectedSoloOE) {
-                    statusText = "머니 미베팅 (관전 모드)";
-                } else {
-                    const mapped = (selectedSoloOE === 'ODD') ? '홀' : '짝';
-                    if (mapped === oe) {
-                        isWin = true; 
-                        let rewardMoney = Math.floor(currentSoloBet * 1.98);
-                        userBalance += rewardMoney;
-                        updateBalanceDOM();
-                        statusText = `홀짝 적중! 🎉 +${rewardMoney.toLocaleString()}원 획득!`;
-                    } else {
-                        statusText = `홀짝 낙첨 💀 -${currentSoloBet.toLocaleString()}원 손실`;
-                    }
-                }
-            } else {
-                if (currentSoloBet <= 0) {
-                    statusText = "머니 미베팅 (관전 모드)";
-                } else if (hasCashedOut) {
-                    isWin = true;
-                    statusText = "이미 안전하게 탈출하여 머니를 확보했습니다! 🎉";
-                } else {
-                    statusText = `탈출 실패 (크래시 타격) 💀 -${currentSoloBet.toLocaleString()}원 증발`;
-                }
-            }
-            
-            const statusEl = document.getElementById('res-final-status');
-            statusEl.innerText = statusText;
-            statusEl.style.color = isWin ? 'var(--neon-green)' : (statusText.includes('관전') ? 'var(--neon-gray)' : 'var(--neon-pink)');
-            
-            if (isWin && mode === 'OE') triggerSingleConfetti(); 
-            
-            setTimeout(() => { if (mainTab === 'SOLO') startSoloAutoCountdown(); }, 3000);
-        }
-
-        function processTeamResult(finalMult) {
-            const reportDiv = document.getElementById('team-round-report');
-            reportDiv.style.display = 'block';
 
             let aliveMembers = teamMembers.filter(m => m.alive);
             let results = aliveMembers.map(m => {
                 const input = document.getElementById(`target-team-${m.id}`);
                 const target = input ? parseFloat(input.value) : 0;
-                return { ...m, target: target || 0, diff: Math.abs((target || 0) - finalMult) };
+                return { ...m, target: target || 0, diff: Math.abs((target || 0) - teamGame.multiplier) };
             });
 
-            results.sort((a, b) => b.diff - a.diff);
+            results.sort((a, b) => b.diff - a.diff); // 오차가 가장 큰 사람이 0등(꼴찌)
             const loser = results[0];
 
-            const realMember = teamMembers.find(m => m.id === loser.id);
-            if (realMember) realMember.alive = false;
+            const targetUser = teamMembers.find(m => m.id === loser.id);
+            if (targetUser) targetUser.alive = false;
 
-            reportDiv.innerHTML = `<span style="color:var(--neon-pink); font-size:1.1rem; font-weight:bold;">💀 [${loser.name}] 꼴찌 당첨!</span><br><br>
-                                   입력한 목표: <strong>${loser.target.toFixed(2)}x</strong> <br>
-                                   실제 종료치와의 오차: <strong>${loser.diff.toFixed(2)}</strong>`;
-            
-            document.getElementById('res-final-status').innerText = `🚨 제 ${teamRound}라운드 꼴찌 탈락: ${loser.name}`;
-            document.getElementById('res-final-status').style.color = 'var(--neon-pink)';
-            
+            if (mainTab === 'TEAM') {
+                resultArea.style.display = 'block';
+                screenBox.classList.add('shake');
+                document.getElementById('res-final-mult').innerText = `${teamGame.multiplier.toFixed(2)}x`;
+                document.getElementById('res-last-digit').innerText = `${lastDigit} (${oe})`;
+                document.getElementById('res-final-status').innerText = `🚨 제 ${teamRound}라운드 탈락: ${loser.name}`;
+                document.getElementById('res-final-status').style.color = 'var(--neon-pink)';
+                
+                const reportDiv = document.getElementById('team-round-report');
+                reportDiv.style.display = 'block';
+                reportDiv.innerHTML = `<span style="color:var(--neon-pink); font-weight:bold;">💀 [${loser.name}] 독박 당첨!</span><br>목표: ${loser.target.toFixed(2)}x / 오차: ${loser.diff.toFixed(2)}`;
+            }
+
             const megaBanner = document.getElementById('mega-banner');
             megaBanner.innerHTML = `
-                <div style="font-size: 2.8rem; color: var(--neon-yellow); text-shadow: 0 0 20px var(--neon-yellow); margin-bottom:15px;">💸 당첨 결과 💸</div>
-                <div style="font-size: 2.2rem; color: #fff; margin-bottom: 20px;"><span style="color:var(--neon-pink); font-size:2.5rem;">${loser.name}</span> 당첨!</div>
-                <div style="font-size: 2rem; color: var(--neon-blue); line-height: 1.6; letter-spacing:1px; margin-bottom: 25px; text-shadow: 0 0 10px var(--neon-blue);">이지까까브로<br>ㅋㅋㅋㅋㅋㅋㅋㅋ</div>
-                <button onclick="closeMegaBanner()" style="background:var(--neon-pink); color:#fff; border:2px solid #fff; padding:10px 24px; font-family:'DungGeunMo'; font-size:1.2rem; cursor:pointer; border-radius:6px; box-shadow:0 0 10px var(--neon-pink);">닫기</button>
+                <div style="font-size: 2rem; color: var(--neon-yellow);">💸 독박 당첨 💸</div>
+                <div style="font-size: 2.2rem; color: #fff; margin:10px 0;"><span style="color:var(--neon-pink);">${loser.name}</span></div>
+                <div style="font-size: 1.4rem; color: var(--neon-blue); line-height:1.4;">이지까까브로<br>ㅋㅋㅋㅋㅋㅋㅋㅋ</div>
+                <button onclick="closeMegaBanner()" style="background:var(--neon-pink); color:#fff; border:none; padding:8px 20px; border-radius:4px; margin-top:15px; font-family:'DungGeunMo'; cursor:pointer;">닫기</button>
             `;
             megaBanner.style.display = 'block';
             
-            triggerMassiveConfetti(); 
+            triggerMassiveConfetti();
             teamRound++;
-            
-            document.getElementById('team-ui-group').classList.remove('disabled-panel');
             refreshTeamUIState();
+            updateUIElements();
         }
 
-        function closeMegaBanner() {
-            document.getElementById('mega-banner').style.display = 'none';
+        function advanceToNextRound() {
+            teamGame.state = 'IDLE';
+            teamGame.multiplier = 1.00;
+            teamGame.tickCounter = 0;
+            teamGame.gridOffset = 0;
+            teamGame.points = [{tick: 0, mult: 1.00}];
+            teamGame.statusText = `✍️ 제 ${teamRound}라운드 준비!`;
+            teamGame.statusColor = 'var(--neon-yellow)';
+
+            teamMembers.forEach(m => {
+                const input = document.getElementById(`target-team-${m.id}`);
+                if (input && m.alive) input.value = '';
+            });
+
+            resultArea.style.display = 'none';
+            screenBox.classList.remove('shake');
+            refreshTeamUIState();
+            updateUIElements();
+        }
+
+        function forceResetWholeMatch() {
+            clearInterval(teamGameInterval);
+            clearInterval(teamCountdownInterval);
+            teamRound = 1;
+            teamMembers.forEach(m => { m.alive = true; });
+            teamGame.state = 'IDLE';
+            teamGame.multiplier = 1.00;
+            teamGame.tickCounter = 0;
+            teamGame.gridOffset = 0;
+            teamGame.points = [{tick: 0, mult: 1.00}];
+            teamGame.statusText = '🔄 단체전 리셋 완료!';
+            
+            buildTeamUI();
+            refreshTeamUIState();
+            resultArea.style.display = 'none';
+            screenBox.classList.remove('shake');
+            updateUIElements();
+        }
+
+        function closeMegaBanner() { document.getElementById('mega-banner').style.display = 'none'; }
+
+        // ==========================================
+        // 🖥️ 공용 모니터링 & 그래픽 통합 처리 부
+        // ==========================================
+        function updateUIElements() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 1. 활성화된 탭의 내부 상태 정보 불러오기
+            let activeGame = (mainTab === 'SOLO') ? soloGame : teamGame;
+            let currentMaxY = Math.max(1.20, activeGame.multiplier);
+            let currentMaxTick = Math.max(30, activeGame.tickCounter);
+
+            drawGrid(currentMaxY, currentMaxTick, activeGame.gridOffset);
+            
+            // 2. 궤적 선 그리기
+            if (activeGame.state === 'RUNNING' || activeGame.state === 'CRASHED' || activeGame.state === 'FINISHED') {
+                if (activeGame.points.length >= 2) {
+                    ctx.save();
+                    ctx.strokeStyle = '#ff007f'; ctx.lineWidth = 4; ctx.shadowBlur = 10; ctx.shadowColor = '#ff007f';
+                    ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.beginPath();
+                    activeGame.points.forEach((p, idx) => {
+                        const reX = paddingLeft + (p.tick / currentMaxTick) * plotWidth;
+                        const reY = (canvas.height - paddingBottom) - ((p.mult - 1.0) / (currentMaxY - 1.0)) * plotHeight;
+                        if (idx === 0) ctx.moveTo(reX, reY);
+                        else ctx.lineTo(reX, reY);
+                    });
+                    ctx.stroke();
+                    
+                    const lastP = activeGame.points[activeGame.points.length - 1];
+                    const headX = paddingLeft + (lastP.tick / currentMaxTick) * plotWidth;
+                    const headY = (canvas.height - paddingBottom) - ((lastP.mult - 1.0) / (currentMaxY - 1.0)) * plotHeight;
+                    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(headX, headY, 5, 0, Math.PI * 2); ctx.fill();
+                    ctx.restore();
+                }
+            }
+
+            // 3. 중앙 오버레이 배수 텍스트 제어
+            if (activeGame.state === 'RUNNING' || activeGame.state === 'CRASHED' || activeGame.state === 'FINISHED') {
+                multDisplay.style.display = 'block';
+                if (activeGame.state === 'CRASHED' || activeGame.state === 'FINISHED') {
+                    if (mainTab === 'SOLO') {
+                        const lastDigit = parseInt((soloGame.multiplier * 100).toFixed(0).slice(-1));
+                        multDisplay.innerText = `${soloGame.multiplier.toFixed(2)}x (${lastDigit % 2 !== 0 ? '홀' : '짝'})`;
+                    } else {
+                        multDisplay.innerText = `${teamGame.multiplier.toFixed(2)}x`;
+                    }
+                    multDisplay.style.color = 'var(--neon-pink)';
+                } else {
+                    multDisplay.innerText = activeGame.multiplier.toFixed(2) + 'x';
+                    multDisplay.style.color = 'var(--neon-green)';
+                }
+            } else {
+                multDisplay.style.display = 'none';
+            }
+
+            // 4. 중앙 카운트다운 숫자 제어
+            if (activeGame.state === 'COUNTDOWN') {
+                countdownDisplay.style.display = 'block';
+                countdownDisplay.innerText = activeGame.countdownLeft.toFixed(2);
+            } else {
+                countdownDisplay.style.display = 'none';
+            }
+
+            // 5. 하단 텍스트 전광판 제어
+            statusDisplay.innerText = activeGame.statusText;
+            statusDisplay.style.color = activeGame.statusColor;
+
+            // 6. [중요] 개인전 수동 탈출(Cashout) 버튼 활성화 연동
+            // 개인전이 활발히 진행 중이며 그래프 배팅이 수동/자동 상태로 익절 대기 중이라면 어느 탭에서든 표시
+            if (soloGame.state === 'RUNNING' && soloGame.isBetLocked && soloGame.subMode === 'GRAPH') {
+                if (!soloGame.hasCashedOut) {
+                    cashoutBtn.style.display = 'block';
+                    cashoutBtn.style.opacity = '1';
+                    let currentEarn = Math.floor(soloGame.betAmount * soloGame.multiplier);
+                    cashoutBtn.innerText = `💸 지금 탈출하기 (적립: ${currentEarn.toLocaleString()}원 / ${soloGame.multiplier.toFixed(2)}x)`;
+                } else {
+                    cashoutBtn.style.display = 'block';
+                    cashoutBtn.style.opacity = '0.5';
+                    cashoutBtn.innerText = `✅ 탈출 성공 상태 (백그라운드 완료)`;
+                }
+            } else {
+                cashoutBtn.style.display = 'none';
+            }
+
+            // 7. 패널 조작 잠금 연동
+            if (mainTab === 'SOLO') {
+                if (soloGame.state !== 'COUNTDOWN' || soloGame.isBetLocked) {
+                    document.getElementById('solo-ui-group').classList.add('disabled-panel');
+                } else {
+                    document.getElementById('solo-ui-group').classList.remove('disabled-panel');
+                }
+            }
+        }
+
+        function drawGrid(currentMaxY, currentMaxTick, offset) {
+            ctx.save();
+            ctx.strokeStyle = '#151526'; ctx.lineWidth = 1; ctx.beginPath();
+            let scrollX = offset % 40;
+            for (let x = paddingLeft + 40 - scrollX; x < canvas.width; x += 40) { ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height - paddingBottom); }
+            for (let y = canvas.height - paddingBottom - 40; y > 0; y -= 40) { ctx.moveTo(paddingLeft, y); ctx.lineTo(canvas.width, y); }
+            ctx.stroke();
+
+            ctx.strokeStyle = '#3d3d5e'; ctx.lineWidth = 2; ctx.beginPath();
+            ctx.moveTo(paddingLeft, 0); ctx.lineTo(paddingLeft, canvas.height - paddingBottom); ctx.lineTo(canvas.width, canvas.height - paddingBottom); ctx.stroke();
+
+            ctx.fillStyle = '#8b8ba8'; ctx.font = '10px DungGeunMo'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+            const totalSec = currentMaxTick / (1000 / 30);
+            for (let sec = 0; sec <= totalSec + 5; sec += 5) {
+                let t = sec * (1000 / 30);
+                let tickX = paddingLeft + (t / currentMaxTick) * plotWidth;
+                if (tickX <= canvas.width && tickX >= paddingLeft) {
+                    ctx.fillText(sec + '초', tickX, canvas.height - paddingBottom + 6);
+                }
+            }
+            ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+            let intervalY = currentMaxY <= 3.0 ? 0.2 : Math.ceil((currentMaxY - 1) / 5);
+            for (let m = 1.0; m <= currentMaxY + 0.01; m += intervalY) {
+                let tickY = (canvas.height - paddingBottom) - ((m - 1.0) / (currentMaxY - 1.0)) * plotHeight;
+                if (tickY >= 0 && tickY <= canvas.height - paddingBottom) {
+                    ctx.fillText(m.toFixed(1), paddingLeft - 8, tickY);
+                }
+            }
+            ctx.restore();
         }
 
         function updateHistory(mult, oe) {
             historyData.unshift({ mult: mult, oe: oe });
             if (historyData.length > 20) historyData.pop();
-            
             historyBox.innerHTML = '';
             historyData.forEach(h => {
                 const colorClass = (h.oe === '홀') ? 'bg-odd' : 'bg-even';
@@ -1310,33 +1094,12 @@
             });
         }
 
-        function triggerSingleConfetti() {
-            if (typeof confetti === 'function') {
-                confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
-            }
-        }
-
+        function triggerSingleConfetti() { confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } }); }
         function triggerMassiveConfetti() {
-            if (typeof confetti !== 'function') return;
-
-            confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#ff007f', '#00f0ff', '#39ff14', '#ffea00'] });
-            confetti({ particleCount: 100, spread: 130, origin: { y: 0.4 }, colors: ['#ffffff', '#ff00aa', '#00ffff'] });
-
-            const duration = 3500;
-            const animationEnd = Date.now() + duration;
-
+            const duration = 3000; const animationEnd = Date.now() + duration;
             (function frame() {
-                confetti({
-                    particleCount: 8, angle: 60, spread: 55, origin: { x: 0, y: 0.85 }, colors: ['#ff007f', '#00f0ff', '#ffea00']
-                });
-                confetti({
-                    particleCount: 8, angle: 120, spread: 55, origin: { x: 1, y: 0.85 }, colors: ['#39ff14', '#ff0055', '#00ffff']
-                });
-                if (Math.random() < 0.25) {
-                    confetti({
-                        particleCount: 20, angle: 90, spread: 140, origin: { x: Math.random(), y: Math.random() * 0.4 }
-                    });
-                }
+                confetti({ particleCount: 7, angle: 60, spread: 55, origin: { x: 0, y: 0.8 }, colors: ['#ff007f', '#00f0ff'] });
+                confetti({ particleCount: 7, angle: 120, spread: 55, origin: { x: 1, y: 0.8 }, colors: ['#39ff14', '#ffea00'] });
                 if (Date.now() < animationEnd) requestAnimationFrame(frame);
             }());
         }
